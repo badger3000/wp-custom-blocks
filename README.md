@@ -50,6 +50,18 @@ custom-blocks/                       # Plugin root directory
    npm install
    ```
 
+   If you encounter dependency conflicts, you can try one of these alternative commands:
+
+   ```
+   npm install --legacy-peer-deps
+   ```
+
+   or
+
+   ```
+   npm install --force
+   ```
+
 4. Build the assets:
 
    ```
