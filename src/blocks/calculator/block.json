@@ -1,0 +1,54 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "custom-blocks/calculator",
+  "title": "Calculator",
+  "category": "common",
+  "icon": "calculator",
+  "description": "A simple calculator block that adds two numbers.",
+  "keywords": ["calculator", "math", "add", "sum"],
+  "textdomain": "custom-blocks",
+  "attributes": {
+    "firstNumber": {
+      "type": "string",
+      "default": ""
+    },
+    "secondNumber": {
+      "type": "string",
+      "default": ""
+    },
+    "result": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": "#f8f9fa"
+    },
+    "textColor": {
+      "type": "string",
+      "default": "#212529"
+    },
+    "padding": {
+      "type": "number",
+      "default": 20
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": true
+  },
+  "example": {
+    "attributes": {
+      "firstNumber": "5",
+      "secondNumber": "7",
+      "result": "12",
+      "backgroundColor": "#f8f9fa",
+      "textColor": "#212529",
+      "padding": 20
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}
