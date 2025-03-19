@@ -26,57 +26,13 @@ function custom_blocks_register_blocks() {
         return;
     }
 
-    // Register script & style for blocks
-    wp_register_script(
-        'custom-blocks-editor-script',
-        CUSTOM_BLOCKS_URL . 'build/index.js',
-        array('wp-blocks', 'wp-element', 'wp-editor', 'wp-components'),
-        CUSTOM_BLOCKS_VERSION,
-        true
-    );
-
-    wp_register_style(
-        'custom-blocks-editor-style',
-        CUSTOM_BLOCKS_URL . 'build/index.css',
-        array('wp-edit-blocks'),
-        CUSTOM_BLOCKS_VERSION
-    );
-
-    wp_register_style(
-        'custom-blocks-frontend-style',
-        CUSTOM_BLOCKS_URL . 'build/style-index.css',
-        array(),
-        CUSTOM_BLOCKS_VERSION
-    );
-
-    // Register blocks - the registration is handled in JS through registerBlockType
-    register_block_type('custom-blocks/sample-block', array(
-        'editor_script' => 'custom-blocks-editor-script',
-        'editor_style'  => 'custom-blocks-editor-style',
-        'style'         => 'custom-blocks-frontend-style',
-    ));
+    // Register blocks using block.json
+    register_block_type(CUSTOM_BLOCKS_PATH . 'build/blocks/sample-block');
+    
+    // Register additional blocks here
+    // register_block_type(CUSTOM_BLOCKS_PATH . 'build/blocks/another-block');
 }
 add_action('init', 'custom_blocks_register_blocks');
-
-/**
- * Enqueue block assets
- */
-function custom_blocks_enqueue_block_assets() {
-    // Only load if Gutenberg is available
-    if (!function_exists('register_block_type')) {
-        return;
-    }
-
-    // Make block data available to JS
-    wp_localize_script(
-        'custom-blocks-editor-script',
-        'customBlocksData',
-        array(
-            'pluginUrl' => CUSTOM_BLOCKS_URL,
-        )
-    );
-}
-add_action('enqueue_block_editor_assets', 'custom_blocks_enqueue_block_assets');
 
 /**
  * Plugin activation

@@ -6,6 +6,7 @@ A flexible WordPress plugin for creating custom Gutenberg blocks. This plugin pr
 
 - Modular architecture for creating and maintaining multiple blocks
 - Built with WordPress Scripts and Webpack for modern development
+- Modern block.json metadata approach for block registration
 - SCSS styling with separate editor and frontend styles
 - Block inspector controls for customizing block appearance
 - Organized codebase following WordPress best practices
@@ -19,6 +20,7 @@ custom-blocks/                       # Plugin root directory
 │   ├── index.js                     # Main entry point
 │   └── blocks/                      # Individual blocks
 │       └── sample-block/            # Sample block implementation
+│           ├── block.json           # Block metadata
 │           ├── index.js             # Block registration
 │           ├── edit.js              # Edit component
 │           ├── save.js              # Save component
@@ -72,18 +74,63 @@ custom-blocks/                       # Plugin root directory
 
 ## Development Workflow
 
-1. Start the development build with automatic rebuild on file changes:
+1. Build the plugin using the included script:
+
+   ```
+   ./build.sh
+   ```
+
+   Or manually:
+
+   ```
+   npm install --legacy-peer-deps
+   npm run build
+   ```
+
+2. Start the development build with automatic rebuild on file changes:
 
    ```
    npm run start
    ```
 
-2. Make changes to your block files in the `src/blocks/` directory.
+3. Make changes to your block files in the `src/blocks/` directory.
 
-3. For production build:
-   ```
-   npm run build
-   ```
+## Build Structure
+
+The plugin uses a custom webpack configuration that ensures proper file organization:
+
+- Each block has its own subdirectory in the build output
+- Only the main `index.js` and `index.asset.php` files are kept in the root
+- Block-specific assets are stored in their respective directories
+- Shared code chunks are organized in dedicated directories
+- All CSS files are properly scoped to their respective blocks
+- Each block's `block.json` file defines paths to scripts and styles
+
+The final build structure looks like this:
+
+```
+build/
+├── index.js              # Main entry point that registers all blocks
+├── index.asset.php       # Asset dependencies for the main file
+├── vendors/              # Shared vendor code (if any)
+│   └── common/           # Common dependencies
+└── blocks/               # Directory containing all blocks
+    └── sample-block/     # Sample block directory
+        ├── block.json    # Block metadata
+        ├── index.js      # Block implementation
+        ├── index.css     # Editor styles
+        ├── style-index.css # Frontend styles
+        └── vendors.js    # Block-specific dependencies (if any)
+```
+
+## Optimized Build Process
+
+The webpack configuration includes several optimizations:
+
+1. **Smart Code Splitting**: Shared dependencies are organized in logical folders
+2. **Whitelist Approach**: Only essential files are kept in the root directory
+3. **Block Isolation**: Each block's assets are contained in its own directory
+4. **Improved Performance**: CSS processing is optimized to reduce duplicated styles
 
 ## Sample Block
 
@@ -111,32 +158,26 @@ To create a new custom block:
 
 2. Edit the files in your new block directory:
 
-   - `index.js`: Update the block name, title, and other registration details
+   - `block.json`: Update the metadata (name, title, description, etc.)
    - `edit.js`: Customize the editor interface and controls
    - `save.js`: Define how the block renders on the frontend
    - `style.scss`: Add frontend styling
    - `editor.scss`: Add editor-specific styling
+   - `index.js`: Usually doesn't need changes as it just imports the other files
 
-3. Import your new block in `src/index.js` and add it to the registration array:
+3. Import your new block in `src/index.js`:
 
    ```javascript
-   import * as myNewBlock from "./blocks/my-new-block";
-
-   [
-     sampleBlock,
-     myNewBlock,
-     // Add more blocks here
-   ].forEach(registerBlock);
+   import "./blocks/sample-block/index.js";
+   import "./blocks/my-new-block/index.js";
    ```
 
 4. Add your block to the main PHP file by adding a new `register_block_type` call in the `custom_blocks_register_blocks` function:
 
    ```php
-   register_block_type('custom-blocks/my-new-block', array(
-       'editor_script' => 'custom-blocks-editor-script',
-       'editor_style'  => 'custom-blocks-editor-style',
-       'style'         => 'custom-blocks-frontend-style',
-   ));
+   // Register blocks using block.json
+   register_block_type(CUSTOM_BLOCKS_PATH . 'build/blocks/sample-block');
+   register_block_type(CUSTOM_BLOCKS_PATH . 'build/blocks/my-new-block');
    ```
 
 5. Run the build process:
