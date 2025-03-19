@@ -1,0 +1,27 @@
+{
+  "name": "custom-blocks",
+  "version": "1.0.0",
+  "description": "Flexible WordPress plugin for custom Gutenberg blocks",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "wp-scripts build",
+    "start": "wp-scripts start",
+    "format": "wp-scripts format",
+    "lint:js": "wp-scripts lint-js",
+    "lint:style": "wp-scripts lint-style"
+  },
+  "author": "WordPress Developer",
+  "license": "GPL-2.0-or-later",
+  "devDependencies": {
+    "@wordpress/scripts": "^25.0.0"
+  },
+  "dependencies": {
+    "@wordpress/block-editor": "^10.0.0",
+    "@wordpress/blocks": "^11.0.0",
+    "@wordpress/components": "^22.0.0",
+    "@wordpress/compose": "^5.0.0",
+    "@wordpress/data": "^7.0.0",
+    "@wordpress/element": "^4.0.0",
+    "@wordpress/i18n": "^4.0.0"
+  }
+}

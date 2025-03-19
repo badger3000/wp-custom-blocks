@@ -1,0 +1,31 @@
+/**
+ * Sample block editor styles.
+ * Styles applied only to the editor.
+ */
+
+@import "./style.scss";
+
+.wp-block-custom-blocks-sample-block {
+  // Editor-specific styles
+  .block-editor-rich-text__editable {
+    &:focus {
+      outline: none;
+    }
+  }
+
+  // Style for color settings in sidebar
+  .custom-blocks-color-settings {
+    margin-bottom: 24px;
+
+    .custom-blocks-color-setting {
+      margin-bottom: 16px;
+
+      h2 {
+        margin-top: 0;
+        margin-bottom: 8px;
+        font-size: 14px;
+        font-weight: 500;
+      }
+    }
+  }
+}
