@@ -3,7 +3,7 @@
  * Styles applied only to the editor.
  */
 
-@import "./style.scss";
+@use "./style.scss";
 
 .wp-block-custom-blocks-sample-block {
   // Editor-specific styles
