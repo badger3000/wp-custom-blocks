@@ -1,0 +1,62 @@
+/**
+ * Editor styles for the Calculator Block
+ */
+
+.calculator-block {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  max-width: 600px;
+  margin: 0 auto;
+
+  &__title {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    text-align: center;
+  }
+
+  &__input-group {
+    margin-bottom: 15px;
+
+    .components-text-control__input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+  }
+
+  &__button-container {
+    margin: 20px 0;
+    text-align: center;
+  }
+
+  &__button {
+    padding: 8px 16px;
+    font-size: 1em;
+  }
+
+  &__result {
+    background-color: #f7f7f7;
+    padding: 15px;
+    border-radius: 4px;
+    font-size: 1.1em;
+    text-align: center;
+    border: 1px solid #eee;
+  }
+}
+
+.custom-blocks-color-settings {
+  margin-bottom: 16px;
+}
+
+.custom-blocks-color-setting {
+  margin-bottom: 16px;
+
+  h2 {
+    margin-bottom: 8px;
+  }
+}

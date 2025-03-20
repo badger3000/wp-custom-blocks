@@ -30,7 +30,7 @@ function custom_blocks_register_blocks() {
     register_block_type(CUSTOM_BLOCKS_PATH . 'build/blocks/sample-block');
     
     // Register additional blocks here
-    // register_block_type(CUSTOM_BLOCKS_PATH . 'build/blocks/another-block');
+    register_block_type(CUSTOM_BLOCKS_PATH . 'build/blocks/calculator');
 }
 add_action('init', 'custom_blocks_register_blocks');
 
