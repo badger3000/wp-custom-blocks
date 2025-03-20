@@ -29,8 +29,11 @@ function custom_blocks_register_blocks() {
     // Register blocks using block.json
     register_block_type(CUSTOM_BLOCKS_PATH . 'build/blocks/sample-block');
     
+    // Register tabs blocks
+    register_block_type(CUSTOM_BLOCKS_PATH . 'build/blocks/tabs-container');
+    register_block_type(CUSTOM_BLOCKS_PATH . 'build/blocks/tab-item');
+    
     // Register additional blocks here
-    // register_block_type(CUSTOM_BLOCKS_PATH . 'build/blocks/another-block');
 }
 add_action('init', 'custom_blocks_register_blocks');
 

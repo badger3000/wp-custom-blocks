@@ -1,0 +1,124 @@
+/**
+ * Editor styles for the Tabs Container Block
+ */
+
+@import "react-tabs/style/react-tabs.css";
+
+.wp-block-custom-blocks-tabs-container {
+  position: relative;
+  margin-bottom: 1.5em;
+
+  .tabs-component {
+    width: 100%;
+  }
+
+  .tabs-navigation {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+    border-bottom: 1px solid #ccc;
+    flex-wrap: wrap;
+
+    &.tabs-align-left {
+      justify-content: flex-start;
+    }
+
+    &.tabs-align-center {
+      justify-content: center;
+    }
+
+    &.tabs-align-right {
+      justify-content: flex-end;
+    }
+
+    .react-tabs__tab {
+      padding: 10px 15px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      border-bottom: none;
+      margin-bottom: -1px;
+      background: #f5f5f5;
+      border-radius: 4px 4px 0 0;
+      margin-right: 5px;
+
+      &--selected,
+      &.active {
+        background: white;
+        border-color: #ccc;
+        border-bottom-color: white;
+      }
+    }
+
+    .add-tab-button {
+      margin: 5px;
+      align-self: center;
+    }
+  }
+
+  .tabs-content-container {
+    min-height: 100px;
+    border: 1px solid #e2e4e7;
+    padding: 15px;
+    background: white;
+  }
+
+  // Styles for different tab styles
+  &.tabs-style-default {
+    .tabs-navigation {
+      .react-tabs__tab {
+        // Default style defined above
+      }
+    }
+  }
+
+  &.tabs-style-boxed {
+    .tabs-navigation {
+      border-bottom: 2px solid #0073aa;
+
+      .react-tabs__tab {
+        background: #f1f1f1;
+        border: 1px solid #f1f1f1;
+        border-radius: 3px 3px 0 0;
+
+        &--selected,
+        &.active {
+          background: #0073aa;
+          border-color: #0073aa;
+          color: white;
+        }
+      }
+    }
+  }
+
+  &.tabs-style-line {
+    .tabs-navigation {
+      border-bottom: 1px solid #e2e4e7;
+
+      .react-tabs__tab {
+        background: transparent;
+        border: none;
+        padding: 10px 15px;
+        position: relative;
+
+        &--selected,
+        &.active {
+          &:after {
+            content: "";
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #0073aa;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Hide tab-item blocks in the block editor when not inside tabs
+.wp-block[data-type="custom-blocks/tab-item"]:not(.has-parent-block) {
+  display: none !important;
+}

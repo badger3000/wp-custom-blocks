@@ -1,0 +1,35 @@
+/**
+ * Frontend styles for the Tab Item Block
+ */
+
+.wp-block-custom-blocks-tab-item {
+  display: none;
+
+  &.active {
+    display: block;
+    animation: tab-fade-in 0.3s ease-in-out;
+  }
+
+  .tab-content {
+    padding: 10px 0;
+  }
+
+  .tab-inner-content {
+    > *:first-child {
+      margin-top: 0;
+    }
+
+    > *:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+@keyframes tab-fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

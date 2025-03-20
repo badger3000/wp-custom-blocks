@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "custom-blocks/tab-item",
+  "title": "Tab Item",
+  "category": "layout",
+  "icon": "table-row",
+  "description": "Individual tab content item for tabs container",
+  "keywords": ["tab", "item", "content", "panel"],
+  "textdomain": "custom-blocks",
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Tab"
+    },
+    "tabId": {
+      "type": "string",
+      "default": ""
+    },
+    "initialOpen": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "parent": ["custom-blocks/tabs-container"],
+  "supports": {
+    "html": false,
+    "reusable": false
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "custom-blocks/tabs-container",
+  "title": "Tabs Container",
+  "category": "layout",
+  "icon": "dashboard",
+  "description": "A container for tabbed content",
+  "keywords": ["tabs", "tab", "navigation", "content"],
+  "textdomain": "custom-blocks",
+  "attributes": {
+    "tabCount": {
+      "type": "number",
+      "default": 1
+    },
+    "activeTab": {
+      "type": "number",
+      "default": 0
+    },
+    "tabsAlignment": {
+      "type": "string",
+      "default": "left"
+    },
+    "tabsStyle": {
+      "type": "string",
+      "default": "default"
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "textColor": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": ["wide", "full"]
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

@@ -1,0 +1,53 @@
+/**
+ * Editor styles for the Tab Item Block
+ */
+
+.wp-block-custom-blocks-tab-item {
+  &:not(.active) {
+    display: none;
+  }
+
+  &.active {
+    display: block;
+  }
+
+  .tab-header {
+    display: none; // Hide in editor - tabs are shown in parent container
+  }
+
+  .tab-content {
+    padding: 20px 0;
+  }
+
+  .tab-inner-content {
+    min-height: 50px;
+  }
+
+  .tab-title {
+    font-weight: 600;
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 1px dashed transparent;
+
+    &:hover {
+      border-color: #ddd;
+    }
+  }
+
+  // Show a message when the tab is selected but hidden (parent not in focus)
+  &.is-selected:not(.active) {
+    position: relative;
+
+    &:before {
+      content: attr(data-tab-index);
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: #1e1e1e;
+      color: white;
+      padding: 5px 10px;
+      font-size: 12px;
+      z-index: 1;
+    }
+  }
+}
