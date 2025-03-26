@@ -5,7 +5,19 @@ import {__} from "@wordpress/i18n";
 import {useBlockProps} from "@wordpress/block-editor";
 
 const Save = ({attributes}) => {
-  const {backgroundColor, textColor, padding} = attributes;
+  const {
+    backgroundColor,
+    textColor,
+    padding,
+    calculatorId,
+    balanceOwed,
+    interestRate,
+    debtType,
+    monthlyPayment,
+    monthsToPay,
+    totalPrincipal,
+    totalInterest,
+  } = attributes;
 
   const blockProps = useBlockProps.save({
     style: {
@@ -15,9 +27,6 @@ const Save = ({attributes}) => {
     },
     className: "calculator-block-container",
   });
-
-  // Unique ID for this block instance
-  const calculatorId = `calculator-${Math.floor(Math.random() * 10000)}`;
 
   const debtOptions = [
     {label: "Credit Card", value: "credit-card"},
@@ -56,7 +65,7 @@ const Save = ({attributes}) => {
                   min="0.01"
                   step="0.01"
                   aria-required="true"
-                  value={attributes.balanceOwed}
+                  value={balanceOwed}
                 />
               </div>
 
@@ -77,7 +86,7 @@ const Save = ({attributes}) => {
                   min="0"
                   max="100"
                   aria-required="true"
-                  value={attributes.interestRate}
+                  value={interestRate}
                 />
               </div>
 
@@ -92,7 +101,7 @@ const Save = ({attributes}) => {
                   id={`${calculatorId}-debt-type`}
                   className="calculator-block__select"
                   data-input="debt-type"
-                  value={attributes.debtType}
+                  value={debtType}
                 >
                   {debtOptions.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -118,7 +127,7 @@ const Save = ({attributes}) => {
                   min="0.01"
                   step="0.01"
                   aria-required="true"
-                  value={attributes.monthlyPayment}
+                  value={monthlyPayment}
                 />
               </div>
 
@@ -145,19 +154,19 @@ const Save = ({attributes}) => {
             <dl className="calculator-block__result-list">
               <div className="calculator-block__result-item">
                 <dt>{__("Monthly Payment:", "custom-blocks")}</dt>
-                <dd data-result="monthly-payment">{attributes.monthlyPayment || "$0.00"}</dd>
+                <dd data-result="monthly-payment">{monthlyPayment || "$0.00"}</dd>
               </div>
               <div className="calculator-block__result-item">
                 <dt>{__("Months to Pay Off:", "custom-blocks")}</dt>
-                <dd data-result="months-to-pay">{attributes.monthsToPay || "0"}</dd>
+                <dd data-result="months-to-pay">{monthsToPay || "0"}</dd>
               </div>
               <div className="calculator-block__result-item">
                 <dt>{__("Total Principal Paid:", "custom-blocks")}</dt>
-                <dd data-result="total-principal">{attributes.totalPrincipal || "$0.00"}</dd>
+                <dd data-result="total-principal">{totalPrincipal || "$0.00"}</dd>
               </div>
               <div className="calculator-block__result-item">
                 <dt>{__("Total Interest Paid:", "custom-blocks")}</dt>
-                <dd data-result="total-interest">{attributes.totalInterest || "$0.00"}</dd>
+                <dd data-result="total-interest">{totalInterest || "$0.00"}</dd>
               </div>
             </dl>
           </div>

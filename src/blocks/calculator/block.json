@@ -10,6 +10,10 @@
   "keywords": ["calculator", "math", "add", "sum"],
   "textdomain": "custom-blocks",
   "attributes": {
+    "calculatorId": {
+      "type": "string",
+      "default": ""
+    },
     "balanceOwed": {
       "type": "string",
       "default": ""
@@ -55,6 +59,7 @@
   },
   "example": {
     "attributes": {
+      "calculatorId": "example",
       "balanceOwed": "",
       "interestRate": "",
       "debtType": "credit-card",

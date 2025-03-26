@@ -7,10 +7,8 @@ import {
   PanelBody,
   ColorPalette,
   RangeControl,
-  TextControl,
-  SelectControl,
 } from "@wordpress/components";
-import {useState} from "@wordpress/element";
+import {useState, useEffect} from "@wordpress/element";
 
 /**
  * Internal dependencies
@@ -36,9 +34,18 @@ const Edit = (props) => {
       monthsToPay,
       totalPrincipal,
       totalInterest,
+      calculatorId,
     },
     setAttributes,
+    clientId,
   } = props;
+
+  // Set a stable ID based on the block's clientId
+  useEffect(() => {
+    if (!calculatorId) {
+      setAttributes({ calculatorId: `calculator-${clientId}` });
+    }
+  }, [clientId, calculatorId, setAttributes]);
 
   // Local state for calculation
   const [localBalanceOwed, setLocalBalanceOwed] = useState(balanceOwed);
@@ -47,7 +54,9 @@ const Edit = (props) => {
   const [localMonthlyPayment, setLocalMonthlyPayment] =
     useState(monthlyPayment);
 
-  const handleCalculation = () => {
+  const handleCalculation = (e) => {
+    e.preventDefault();
+    
     // Convert to numbers and calculate
     const balance = parseFloat(localBalanceOwed) || 0;
     const interest = parseFloat(localInterestRate) || 0;
@@ -64,7 +73,7 @@ const Edit = (props) => {
       interestRate: localInterestRate,
       debtType: localDebtType,
       monthlyPayment: localMonthlyPayment,
-      monthsToPay: Math.round(months),
+      monthsToPay: Math.round(months).toString(),
       totalPrincipal: principal.toFixed(2),
       totalInterest: interestPaid.toFixed(2),
     });
@@ -82,6 +91,7 @@ const Edit = (props) => {
       color: textColor,
       padding: `${padding}px`,
     },
+    className: "calculator-block-container",
   });
 
   return (
@@ -115,84 +125,144 @@ const Edit = (props) => {
       </InspectorControls>
 
       <div {...blockProps}>
-        <div className="calculator-block">
+        <div className="calculator-block" id={calculatorId}>
           <h3 className="calculator-block__title">
             {__("Debt Calculator", "custom-blocks")}
           </h3>
 
-          <div className="calculator-block__form">
-            <div className="calculator-block__input-group">
-              <TextControl
-                label={__("Balance Owed", "custom-blocks")}
-                type="number"
-                value={localBalanceOwed}
-                onChange={setLocalBalanceOwed}
-                className="calculator-block__input"
-                required
-              />
-            </div>
+          <div className="calculator-block__container">
+            <form 
+              className="calculator-block__form" 
+              aria-labelledby={`${calculatorId}-title`}
+              onSubmit={handleCalculation}
+            >
+              <fieldset>
+                <legend className="screen-reader-text">{__("Debt Information", "custom-blocks")}</legend>
+                
+                <div className="calculator-block__input-group">
+                  <label
+                    htmlFor={`${calculatorId}-balance`}
+                    className="calculator-block__label"
+                  >
+                    {__("Balance Owed", "custom-blocks")}
+                  </label>
+                  <input
+                    id={`${calculatorId}-balance`}
+                    type="number"
+                    className="calculator-block__input"
+                    data-input="balance-owed"
+                    required
+                    min="0.01"
+                    step="0.01"
+                    aria-required="true"
+                    value={localBalanceOwed}
+                    onChange={(e) => setLocalBalanceOwed(e.target.value)}
+                  />
+                </div>
 
-            <div className="calculator-block__input-group">
-              <TextControl
-                label={__("Estimated Interest Rate (%)", "custom-blocks")}
-                type="number"
-                value={localInterestRate}
-                onChange={setLocalInterestRate}
-                step="0.1"
-                className="calculator-block__input"
-                required
-              />
-            </div>
+                <div className="calculator-block__input-group">
+                  <label
+                    htmlFor={`${calculatorId}-interest`}
+                    className="calculator-block__label"
+                  >
+                    {__("Estimated Interest Rate (%)", "custom-blocks")}
+                  </label>
+                  <input
+                    id={`${calculatorId}-interest`}
+                    type="number"
+                    className="calculator-block__input"
+                    step="0.1"
+                    data-input="interest-rate"
+                    required
+                    min="0"
+                    max="100"
+                    aria-required="true"
+                    value={localInterestRate}
+                    onChange={(e) => setLocalInterestRate(e.target.value)}
+                  />
+                </div>
 
-            <div className="calculator-block__input-group">
-              <SelectControl
-                label={__("Debt Type", "custom-blocks")}
-                value={localDebtType}
-                options={debtOptions}
-                onChange={setLocalDebtType}
-                className="calculator-block__select"
-              />
-            </div>
+                <div className="calculator-block__input-group">
+                  <label
+                    htmlFor={`${calculatorId}-debt-type`}
+                    className="calculator-block__label"
+                  >
+                    {__("Debt Type", "custom-blocks")}
+                  </label>
+                  <select
+                    id={`${calculatorId}-debt-type`}
+                    className="calculator-block__select"
+                    data-input="debt-type"
+                    value={localDebtType}
+                    onChange={(e) => setLocalDebtType(e.target.value)}
+                  >
+                    {debtOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-            <div className="calculator-block__input-group">
-              <TextControl
-                label={__("Monthly Payment", "custom-blocks")}
-                type="number"
-                value={localMonthlyPayment}
-                onChange={setLocalMonthlyPayment}
-                className="calculator-block__input"
-                required
-              />
-            </div>
+                <div className="calculator-block__input-group">
+                  <label
+                    htmlFor={`${calculatorId}-payment`}
+                    className="calculator-block__label"
+                  >
+                    {__("Monthly Payment", "custom-blocks")}
+                  </label>
+                  <input
+                    id={`${calculatorId}-payment`}
+                    type="number"
+                    className="calculator-block__input"
+                    data-input="monthly-payment"
+                    required
+                    min="0.01"
+                    step="0.01"
+                    aria-required="true"
+                    value={localMonthlyPayment}
+                    onChange={(e) => setLocalMonthlyPayment(e.target.value)}
+                  />
+                </div>
 
-            <div className="calculator-block__button-container">
-              <button
-                className="calculator-block__button wp-element-button"
-                type="button"
-                onClick={handleCalculation}
-              >
-                {__("Calculate", "custom-blocks")}
-              </button>
-            </div>
-          </div>
+                <div className="calculator-block__button-container">
+                  <button
+                    className="calculator-block__button wp-element-button"
+                    data-action="calculate"
+                    type="submit"
+                  >
+                    {__("Calculate", "custom-blocks")}
+                  </button>
+                </div>
+              </fieldset>
+            </form>
 
-          <div className="calculator-block__results">
-            <h4>{__("Results", "custom-blocks")}</h4>
-            <div className="calculator-block__result-item">
-              <span>{__("Monthly Payment:", "custom-blocks")}</span>
-              <strong>{monthlyPayment}</strong>
-            </div>
-            <div className="calculator-block__result-item">
-              <span>{__("Months to Pay Off:", "custom-blocks")}</span>
-              <strong>{monthsToPay}</strong>
-            </div>
-            <div className="calculator-block__result-item">
-              <span>{__("Total Principal Paid:", "custom-blocks")}</span>
-              <strong>{totalPrincipal}</strong>
-            </div>
-            <div className="calculator-block__result-item">
-              <span>{__("Total Interest Paid:", "custom-blocks")}</span>
-              <strong>{totalInterest}</strong>
+            <div 
+              className="calculator-block__results" 
+              id={`${calculatorId}-results`}
+              aria-live="polite"
+              role="region"
+              aria-label={__("Calculation Results", "custom-blocks")}
+            >
+              <h4>{__("Results", "custom-blocks")}</h4>
+              <dl className="calculator-block__result-list">
+                <div className="calculator-block__result-item">
+                  <dt>{__("Monthly Payment:", "custom-blocks")}</dt>
+                  <dd data-result="monthly-payment">{monthlyPayment || "$0.00"}</dd>
+                </div>
+                <div className="calculator-block__result-item">
+                  <dt>{__("Months to Pay Off:", "custom-blocks")}</dt>
+                  <dd data-result="months-to-pay">{monthsToPay || "0"}</dd>
+                </div>
+                <div className="calculator-block__result-item">
+                  <dt>{__("Total Principal Paid:", "custom-blocks")}</dt>
+                  <dd data-result="total-principal">{totalPrincipal || "$0.00"}</dd>
+                </div>
+                <div className="calculator-block__result-item">
+                  <dt>{__("Total Interest Paid:", "custom-blocks")}</dt>
+                  <dd data-result="total-interest">{totalInterest || "$0.00"}</dd>
+                </div>
+              </dl>
             </div>
           </div>
         </div>
