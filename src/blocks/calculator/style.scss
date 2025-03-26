@@ -7,14 +7,10 @@
 }
 
 .calculator-block {
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-
+  
   &__title {
     text-align: center;
     margin-bottom: 1.5em;
@@ -41,15 +37,35 @@
   }
 
   &__form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5em;
+    fieldset {
+      border: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .screen-reader-text {
+      border: 0;
+      clip: rect(1px, 1px, 1px, 1px);
+      clip-path: inset(50%);
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      padding: 0;
+      position: absolute;
+      width: 1px;
+      word-wrap: normal !important;
+    }
   }
 
   &__input-group {
     display: flex;
     flex-direction: column;
     gap: 0.5em;
+    margin-bottom: 1.5em;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
   &__label {
@@ -57,17 +73,26 @@
     color: #333;
   }
 
-  &__input {
+  &__input,
+  &__select {
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 16px;
     width: 100%;
-
+    
     &:focus {
       outline: none;
       border-color: #007cba;
       box-shadow: 0 0 0 1px #007cba;
+    }
+
+    &:invalid {
+      border-color: #cc1818;
+      
+      &:focus {
+        box-shadow: 0 0 0 1px #cc1818;
+      }
     }
   }
 
@@ -85,16 +110,68 @@
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.2s ease;
-
+    
     &:hover {
       background-color: #006ba1;
     }
+
+    &:focus {
+      outline: 2px solid #007cba;
+      outline-offset: 2px;
+    }
   }
 
-  &__result {
+  &__results {
     background-color: #f8f9fa;
     padding: 1.5em;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+    h4 {
+      text-align: center;
+      margin-bottom: 1em;
+      font-size: 1.2em;
+      color: #333;
+    }
+  }
+
+  &__result-list {
+    margin: 0;
+    padding: 0;
+  }
+
+  &__result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75em 0;
+    border-bottom: 1px solid #eee;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    dt {
+      color: #666;
+      margin: 0;
+    }
+
+    dd {
+      color: #007cba;
+      font-size: 1.1em;
+      font-weight: 600;
+      margin: 0;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

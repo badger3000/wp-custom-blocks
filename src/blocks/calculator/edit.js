@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-import { __ } from "@wordpress/i18n";
-import { useBlockProps, InspectorControls } from "@wordpress/block-editor";
+import {__} from "@wordpress/i18n";
+import {useBlockProps, InspectorControls} from "@wordpress/block-editor";
 import {
   PanelBody,
   ColorPalette,
@@ -10,7 +10,7 @@ import {
   TextControl,
   SelectControl,
 } from "@wordpress/components";
-import { useState } from "@wordpress/element";
+import {useState} from "@wordpress/element";
 
 /**
  * Internal dependencies
@@ -44,7 +44,8 @@ const Edit = (props) => {
   const [localBalanceOwed, setLocalBalanceOwed] = useState(balanceOwed);
   const [localInterestRate, setLocalInterestRate] = useState(interestRate);
   const [localDebtType, setLocalDebtType] = useState(debtType);
-  const [localMonthlyPayment, setLocalMonthlyPayment] = useState(monthlyPayment);
+  const [localMonthlyPayment, setLocalMonthlyPayment] =
+    useState(monthlyPayment);
 
   const handleCalculation = () => {
     // Convert to numbers and calculate
@@ -70,9 +71,9 @@ const Edit = (props) => {
   };
 
   const debtOptions = [
-    { label: 'Credit Card', value: 'credit-card' },
-    { label: 'Mortgage', value: 'mortgage' },
-    { label: 'Student Loan', value: 'student-loan' },
+    {label: "Credit Card", value: "credit-card"},
+    {label: "Mortgage", value: "mortgage"},
+    {label: "Student Loan", value: "student-loan"},
   ];
 
   const blockProps = useBlockProps({
@@ -92,21 +93,21 @@ const Edit = (props) => {
               <h2>{__("Background Color", "custom-blocks")}</h2>
               <ColorPalette
                 value={backgroundColor}
-                onChange={(color) => setAttributes({ backgroundColor: color })}
+                onChange={(color) => setAttributes({backgroundColor: color})}
               />
             </div>
             <div className="custom-blocks-color-setting">
               <h2>{__("Text Color", "custom-blocks")}</h2>
               <ColorPalette
                 value={textColor}
-                onChange={(color) => setAttributes({ textColor: color })}
+                onChange={(color) => setAttributes({textColor: color})}
               />
             </div>
           </div>
           <RangeControl
             label={__("Padding", "custom-blocks")}
             value={padding}
-            onChange={(value) => setAttributes({ padding: value })}
+            onChange={(value) => setAttributes({padding: value})}
             min={0}
             max={100}
           />
@@ -127,6 +128,7 @@ const Edit = (props) => {
                 value={localBalanceOwed}
                 onChange={setLocalBalanceOwed}
                 className="calculator-block__input"
+                required
               />
             </div>
 
@@ -138,6 +140,7 @@ const Edit = (props) => {
                 onChange={setLocalInterestRate}
                 step="0.1"
                 className="calculator-block__input"
+                required
               />
             </div>
 
@@ -158,6 +161,7 @@ const Edit = (props) => {
                 value={localMonthlyPayment}
                 onChange={setLocalMonthlyPayment}
                 className="calculator-block__input"
+                required
               />
             </div>
 

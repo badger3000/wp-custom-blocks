@@ -22,11 +22,17 @@ function getEntryPoints() {
       .filter((dirent) => dirent.isDirectory())
       .map((dirent) => dirent.name);
 
-    // Add each block's index.js as an entry point
+    // Add each block's index.js and view.js as entry points
     blockFolders.forEach((blockName) => {
       const blockIndexPath = path.resolve(blocksDir, blockName, "index.js");
+      const blockViewPath = path.resolve(blocksDir, blockName, "view.js");
+
       if (fs.existsSync(blockIndexPath)) {
         entryPoints[`blocks/${blockName}/index`] = blockIndexPath;
+      }
+      
+      if (fs.existsSync(blockViewPath)) {
+        entryPoints[`blocks/${blockName}/view`] = blockViewPath;
       }
     });
   }
