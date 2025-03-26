@@ -2,32 +2,47 @@
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 2,
   "name": "custom-blocks/calculator",
-  "title": "Calculator",
-  "category": "common",
+  "version": "0.1.0",
+  "title": "Debt Calculator",
+  "category": "widgets",
   "icon": "calculator",
-  "description": "A simple calculator block that adds two numbers.",
+  "description": "A debt calculator block for calculating loan payments and interest.",
   "keywords": ["calculator", "math", "add", "sum"],
   "textdomain": "custom-blocks",
   "attributes": {
-    "firstNumber": {
+    "balanceOwed": {
       "type": "string",
       "default": ""
     },
-    "secondNumber": {
+    "interestRate": {
       "type": "string",
       "default": ""
     },
-    "result": {
+    "debtType": {
+      "type": "string",
+      "default": "credit-card"
+    },
+    "monthlyPayment": {
       "type": "string",
       "default": ""
+    },
+    "monthsToPay": {
+      "type": "string",
+      "default": "0"
+    },
+    "totalPrincipal": {
+      "type": "string",
+      "default": "0"
+    },
+    "totalInterest": {
+      "type": "string",
+      "default": "0"
     },
     "backgroundColor": {
-      "type": "string",
-      "default": "#f8f9fa"
+      "type": "string"
     },
     "textColor": {
-      "type": "string",
-      "default": "#212529"
+      "type": "string"
     },
     "padding": {
       "type": "number",
@@ -40,15 +55,20 @@
   },
   "example": {
     "attributes": {
-      "firstNumber": "5",
-      "secondNumber": "7",
-      "result": "12",
-      "backgroundColor": "#f8f9fa",
-      "textColor": "#212529",
+      "balanceOwed": "",
+      "interestRate": "",
+      "debtType": "credit-card",
+      "monthlyPayment": "",
+      "monthsToPay": "0",
+      "totalPrincipal": "0",
+      "totalInterest": "0",
+      "backgroundColor": "",
+      "textColor": "",
       "padding": 20
     }
   },
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
-  "style": "file:./style-index.css"
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js"
 }
