@@ -3,7 +3,7 @@ node_modules/
 vendor/
 
 # Build output
-/build/
+#/build/
 
 # Logs
 logs

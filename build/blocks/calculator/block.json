@@ -1,0 +1,89 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "custom-blocks/calculator",
+  "version": "0.1.0",
+  "title": "Debt Calculator",
+  "category": "widgets",
+  "icon": "calculator",
+  "description": "A debt calculator block for calculating loan payments and interest.",
+  "keywords": [
+    "calculator",
+    "math",
+    "add",
+    "sum"
+  ],
+  "textdomain": "custom-blocks",
+  "attributes": {
+    "calculatorId": {
+      "type": "string",
+      "default": ""
+    },
+    "balanceOwed": {
+      "type": "string",
+      "default": ""
+    },
+    "interestRate": {
+      "type": "string",
+      "default": ""
+    },
+    "debtType": {
+      "type": "string",
+      "default": "credit-card"
+    },
+    "monthlyPayment": {
+      "type": "string",
+      "default": ""
+    },
+    "monthsToPay": {
+      "type": "string",
+      "default": "0"
+    },
+    "totalPrincipal": {
+      "type": "string",
+      "default": "0"
+    },
+    "totalInterest": {
+      "type": "string",
+      "default": "0"
+    },
+    "userEmail": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundColor": {
+      "type": "string"
+    },
+    "textColor": {
+      "type": "string"
+    },
+    "padding": {
+      "type": "number",
+      "default": 20
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": true
+  },
+  "example": {
+    "attributes": {
+      "calculatorId": "example",
+      "balanceOwed": "",
+      "interestRate": "",
+      "debtType": "credit-card",
+      "monthlyPayment": "",
+      "monthsToPay": "0",
+      "totalPrincipal": "0",
+      "totalInterest": "0",
+      "userEmail": "",
+      "backgroundColor": "",
+      "textColor": "",
+      "padding": 20
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js"
+}

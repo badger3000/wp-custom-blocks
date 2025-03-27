@@ -1,0 +1,50 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "custom-blocks/sample-block",
+  "title": "Sample Block",
+  "category": "common",
+  "icon": "smiley",
+  "description": "A sample block for demonstration purposes.",
+  "keywords": [
+    "sample",
+    "example",
+    "custom"
+  ],
+  "textdomain": "custom-blocks",
+  "attributes": {
+    "content": {
+      "type": "string",
+      "source": "html",
+      "selector": "p",
+      "default": ""
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": "#f8f9fa"
+    },
+    "textColor": {
+      "type": "string",
+      "default": "#212529"
+    },
+    "padding": {
+      "type": "number",
+      "default": 20
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": true
+  },
+  "example": {
+    "attributes": {
+      "content": "Hello from the sample block!",
+      "backgroundColor": "#f8f9fa",
+      "textColor": "#212529",
+      "padding": 20
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}
