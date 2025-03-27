@@ -17,15 +17,39 @@ document.addEventListener('DOMContentLoaded', function () {
         const emailInput = form.querySelector('[data-input="user-email"]');
 
         const balance = parseFloat(balanceInput.value) || 0;
-        const interest = parseFloat(interestInput.value) || 0;
+        const annualInterestRate = parseFloat(interestInput.value) || 0;
         const debtType = debtTypeInput.value;
         const monthly = parseFloat(monthlyInput.value) || 0;
         const email = emailInput ? emailInput.value.trim() : '';
 
-        // Calculate results
-        const months = balance / monthly;
-        const principal = balance;
-        const interestPaid = (balance * interest) / 100;
+        // Calculate monthly interest rate
+        const monthlyRate = annualInterestRate / 100 / 12;
+
+        // Calculate number of months needed to pay off the debt
+        let remainingBalance = balance;
+        let months = 0;
+        let totalInterest = 0;
+
+        // Calculate amortization
+        while (remainingBalance > 0 && months < 1200) { // Cap at 100 years
+          const monthlyInterest = remainingBalance * monthlyRate;
+          const monthlyPrincipal = Math.min(monthly - monthlyInterest, remainingBalance);
+          
+          if (monthly <= monthlyInterest) {
+            // Payment is too low to cover interest
+            alert('Monthly payment must be higher than the monthly interest: $' + monthlyInterest.toFixed(2));
+            return;
+          }
+
+          totalInterest += monthlyInterest;
+          remainingBalance -= monthlyPrincipal;
+          months++;
+
+          // Handle small remaining amounts
+          if (remainingBalance < 0.01) {
+            remainingBalance = 0;
+          }
+        }
 
         // Format currency function
         const formatCurrency = (amount) => {
@@ -36,11 +60,11 @@ document.addEventListener('DOMContentLoaded', function () {
         results.querySelector('[data-result="monthly-payment"]').textContent =
           formatCurrency(monthly);
         results.querySelector('[data-result="months-to-pay"]').textContent =
-          Math.round(months);
+          months;
         results.querySelector('[data-result="total-principal"]').textContent =
-          formatCurrency(principal);
+          formatCurrency(balance);
         results.querySelector('[data-result="total-interest"]').textContent =
-          formatCurrency(interestPaid);
+          formatCurrency(totalInterest);
 
         // If email is provided, send results
         if (email !== '') {
@@ -49,12 +73,12 @@ document.addEventListener('DOMContentLoaded', function () {
           data.append('nonce', window.calculatorData?.nonce || '');
           data.append('email', email);
           data.append('balance', balance);
-          data.append('interest', interest);
+          data.append('interest', annualInterestRate);
           data.append('debtType', debtType);
           data.append('monthly', monthly);
-          data.append('months', Math.round(months));
-          data.append('principal', principal);
-          data.append('totalInterest', interestPaid);
+          data.append('months', months);
+          data.append('principal', balance);
+          data.append('totalInterest', totalInterest);
 
           fetch(window.calculatorData?.ajaxurl || '/wp-admin/admin-ajax.php', {
             method: 'POST',
