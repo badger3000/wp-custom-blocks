@@ -1,38 +1,110 @@
 <?php
 /**
- * Plugin Name: Custom Blocks
- * Description: A flexible plugin for creating custom Gutenberg blocks
- * Version: 1.0.0
- * Author: WordPress Developer
- * Text Domain: custom-blocks
+ * Plugin Name:       Custom Blocks
+ * Description:       Custom blocks for WordPress.
+ * Requires at least: 6.1
+ * Requires PHP:      7.0
+ * Version:          0.1.0
+ * Author:           Your Name
+ * License:          GPL-2.0-or-later
+ * License URI:      https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:      custom-blocks
+ *
+ * @package          create-block
  */
 
-// Exit if accessed directly
 if (!defined('ABSPATH')) {
     exit;
 }
 
-// Define plugin constants
-define('CUSTOM_BLOCKS_PATH', plugin_dir_path(__FILE__));
-define('CUSTOM_BLOCKS_URL', plugin_dir_url(__FILE__));
-define('CUSTOM_BLOCKS_VERSION', '1.0.0');
+/**
+ * Registers the block using the metadata loaded from the `block.json` manifest.
+ * Behind the scenes, it registers also all assets so they can be enqueued
+ * through the block editor in the corresponding context.
+ *
+ * @see https://developer.wordpress.org/reference/functions/register_block_type/
+ */
+function create_block_custom_blocks_block_init() {
+    register_block_type(__DIR__ . '/build/blocks/calculator');
+    register_block_type(__DIR__ . '/build/blocks/sample-block');
+}
+add_action('init', 'create_block_custom_blocks_block_init');
 
 /**
- * Register blocks and their assets
+ * Enqueue block scripts and localize data
  */
-function custom_blocks_register_blocks() {
-    // Check if Gutenberg is available
-    if (!function_exists('register_block_type')) {
+function custom_blocks_enqueue_scripts() {
+    if (has_block('custom-blocks/calculator')) {
+        wp_localize_script('custom-blocks-calculator-view-script', 'calculatorData', array(
+            'ajaxurl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('calculator_email_nonce')
+        ));
+    }
+}
+add_action('wp_enqueue_scripts', 'custom_blocks_enqueue_scripts');
+
+/**
+ * Handle sending calculator results via email
+ */
+function handle_calculator_email() {
+    // Verify nonce for security
+    if (!check_ajax_referer('calculator_email_nonce', 'nonce', false)) {
+        wp_send_json_error('Invalid security token');
         return;
     }
 
-    // Register blocks using block.json
-    register_block_type(CUSTOM_BLOCKS_PATH . 'build/blocks/sample-block');
-    
-    // Register additional blocks here
-    register_block_type(CUSTOM_BLOCKS_PATH . 'build/blocks/calculator');
+    // Get POST data
+    $email = sanitize_email($_POST['email']);
+    $balance = floatval($_POST['balance']);
+    $interest = floatval($_POST['interest']);
+    $debt_type = sanitize_text_field($_POST['debtType']);
+    $monthly = floatval($_POST['monthly']);
+    $months = intval($_POST['months']);
+    $principal = floatval($_POST['principal']);
+    $total_interest = floatval($_POST['totalInterest']);
+
+    // Validate email
+    if (!is_email($email)) {
+        wp_send_json_error('Invalid email address');
+        return;
+    }
+
+    // Create email content
+    $subject = 'Your Debt Calculator Results';
+    $message = sprintf(
+        'Here are your debt calculation results:
+
+Debt Type: %s
+Balance Owed: $%s
+Interest Rate: %s%%
+Monthly Payment: $%s
+
+Months to Pay Off: %s
+Total Principal: $%s
+Total Interest: $%s
+
+Thank you for using our Debt Calculator!',
+        ucwords(str_replace('-', ' ', $debt_type)),
+        number_format($balance, 2),
+        number_format($interest, 1),
+        number_format($monthly, 2),
+        $months,
+        number_format($principal, 2),
+        number_format($total_interest, 2)
+    );
+
+    // Send email
+    $headers = array('Content-Type: text/plain; charset=UTF-8');
+    $sent = wp_mail($email, $subject, $message, $headers);
+
+    if ($sent) {
+        wp_send_json_success('Email sent successfully');
+    } else {
+        wp_send_json_error('Failed to send email');
+    }
 }
-add_action('init', 'custom_blocks_register_blocks');
+add_action('wp_ajax_send_calculator_results', 'handle_calculator_email');
+add_action('wp_ajax_nopriv_send_calculator_results', 'handle_calculator_email');
 
 /**
  * Plugin activation

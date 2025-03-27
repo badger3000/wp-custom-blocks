@@ -42,6 +42,10 @@
       "type": "string",
       "default": "0"
     },
+    "userEmail": {
+      "type": "string",
+      "default": ""
+    },
     "backgroundColor": {
       "type": "string"
     },
@@ -67,6 +71,7 @@
       "monthsToPay": "0",
       "totalPrincipal": "0",
       "totalInterest": "0",
+      "userEmail": "",
       "backgroundColor": "",
       "textColor": "",
       "padding": 20

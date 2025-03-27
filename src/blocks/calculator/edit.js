@@ -35,6 +35,7 @@ const Edit = (props) => {
       totalPrincipal,
       totalInterest,
       calculatorId,
+      userEmail,
     },
     setAttributes,
     clientId,
@@ -47,12 +48,12 @@ const Edit = (props) => {
     }
   }, [clientId, calculatorId, setAttributes]);
 
-  // Local state for calculation
+  // Local state for form inputs
   const [localBalanceOwed, setLocalBalanceOwed] = useState(balanceOwed);
   const [localInterestRate, setLocalInterestRate] = useState(interestRate);
   const [localDebtType, setLocalDebtType] = useState(debtType);
-  const [localMonthlyPayment, setLocalMonthlyPayment] =
-    useState(monthlyPayment);
+  const [localMonthlyPayment, setLocalMonthlyPayment] = useState(monthlyPayment);
+  const [localEmail, setLocalEmail] = useState(userEmail);
 
   const handleCalculation = (e) => {
     e.preventDefault();
@@ -76,6 +77,7 @@ const Edit = (props) => {
       monthsToPay: Math.round(months).toString(),
       totalPrincipal: principal.toFixed(2),
       totalInterest: interestPaid.toFixed(2),
+      userEmail: localEmail,
     });
   };
 
@@ -222,6 +224,23 @@ const Edit = (props) => {
                     aria-required="true"
                     value={localMonthlyPayment}
                     onChange={(e) => setLocalMonthlyPayment(e.target.value)}
+                  />
+                </div>
+
+                <div className="calculator-block__input-group">
+                  <label
+                    htmlFor={`${calculatorId}-email`}
+                    className="calculator-block__label"
+                  >
+                    {__("Email Results To (optional)", "custom-blocks")}
+                  </label>
+                  <input
+                    id={`${calculatorId}-email`}
+                    type="email"
+                    className="calculator-block__input"
+                    data-input="user-email"
+                    value={localEmail}
+                    onChange={(e) => setLocalEmail(e.target.value)}
                   />
                 </div>
 

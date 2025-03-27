@@ -17,6 +17,7 @@ const Save = ({attributes}) => {
     monthsToPay,
     totalPrincipal,
     totalInterest,
+    userEmail,
   } = attributes;
 
   const blockProps = useBlockProps.save({
@@ -128,6 +129,22 @@ const Save = ({attributes}) => {
                   step="0.01"
                   aria-required="true"
                   value={monthlyPayment}
+                />
+              </div>
+
+              <div className="calculator-block__input-group">
+                <label
+                  htmlFor={`${calculatorId}-email`}
+                  className="calculator-block__label"
+                >
+                  {__("Email Results To (optional)", "custom-blocks")}
+                </label>
+                <input
+                  id={`${calculatorId}-email`}
+                  type="email"
+                  className="calculator-block__input"
+                  data-input="user-email"
+                  value={userEmail}
                 />
               </div>
 

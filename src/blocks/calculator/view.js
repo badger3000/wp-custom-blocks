@@ -1,86 +1,82 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // Check if calculator block exists in the DOM
-  const calculatorBlocks = document.querySelectorAll(".calculator-block");
+document.addEventListener('DOMContentLoaded', function () {
+  const calculators = document.querySelectorAll('.calculator-block');
 
-  if (!calculatorBlocks.length) return;
-  console.log("Calculator blocks found:", calculatorBlocks);
+  calculators.forEach(function (calculator) {
+    const form = calculator.querySelector('.calculator-block__form');
+    const results = calculator.querySelector('.calculator-block__results');
 
-  // Initialize each calculator block
-  calculatorBlocks.forEach((calculator) => {
-    const form = calculator.querySelector("form");
-    const balanceInput = calculator.querySelector(
-      '[data-input="balance-owed"]'
-    );
-    const interestInput = calculator.querySelector(
-      '[data-input="interest-rate"]'
-    );
-    const debtTypeSelect = calculator.querySelector('[data-input="debt-type"]');
-    const paymentInput = calculator.querySelector(
-      '[data-input="monthly-payment"]'
-    );
-    const monthlyPaymentResult = calculator.querySelector(
-      '[data-result="monthly-payment"]'
-    );
-    const monthsToPayResult = calculator.querySelector(
-      '[data-result="months-to-pay"]'
-    );
-    const totalPrincipalResult = calculator.querySelector(
-      '[data-result="total-principal"]'
-    );
-    const totalInterestResult = calculator.querySelector(
-      '[data-result="total-interest"]'
-    );
+    if (form && results) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
 
-    // Ensure all required elements exist
-    if (
-      form &&
-      balanceInput &&
-      interestInput &&
-      debtTypeSelect &&
-      paymentInput &&
-      monthlyPaymentResult &&
-      monthsToPayResult &&
-      totalPrincipalResult &&
-      totalInterestResult
-    ) {
-      // Add form submit handler
-      form.addEventListener("submit", function (e) {
-        // Only prevent default if form is valid
-        if (form.checkValidity()) {
-          e.preventDefault();
+        // Get form values
+        const balanceInput = form.querySelector('[data-input="balance-owed"]');
+        const interestInput = form.querySelector('[data-input="interest-rate"]');
+        const debtTypeInput = form.querySelector('[data-input="debt-type"]');
+        const monthlyInput = form.querySelector('[data-input="monthly-payment"]');
+        const emailInput = form.querySelector('[data-input="user-email"]');
 
-          // Get input values
-          const balance = parseFloat(balanceInput.value);
-          const interestRate = parseFloat(interestInput.value);
-          const debtType = debtTypeSelect.value;
-          const monthlyPayment = parseFloat(paymentInput.value);
+        const balance = parseFloat(balanceInput.value) || 0;
+        const interest = parseFloat(interestInput.value) || 0;
+        const debtType = debtTypeInput.value;
+        const monthly = parseFloat(monthlyInput.value) || 0;
+        const email = emailInput ? emailInput.value.trim() : '';
 
-          // Calculate results
-          const monthsToPay = Math.ceil(balance / monthlyPayment);
-          const totalPrincipal = balance;
-          const totalInterest =
-            ((balance * interestRate) / 100) * (monthsToPay / 12); // Adjust interest for years
+        // Calculate results
+        const months = balance / monthly;
+        const principal = balance;
+        const interestPaid = (balance * interest) / 100;
 
-          // Format currency
-          const formatCurrency = (amount) => {
-            return new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
-            }).format(amount);
-          };
+        // Format currency function
+        const formatCurrency = (amount) => {
+          return '$' + parseFloat(amount).toFixed(2);
+        };
 
-          // Update results
-          monthlyPaymentResult.textContent = formatCurrency(monthlyPayment);
-          monthsToPayResult.textContent = monthsToPay;
-          totalPrincipalResult.textContent = formatCurrency(totalPrincipal);
-          totalInterestResult.textContent = formatCurrency(totalInterest);
+        // Update results display
+        results.querySelector('[data-result="monthly-payment"]').textContent =
+          formatCurrency(monthly);
+        results.querySelector('[data-result="months-to-pay"]').textContent =
+          Math.round(months);
+        results.querySelector('[data-result="total-principal"]').textContent =
+          formatCurrency(principal);
+        results.querySelector('[data-result="total-interest"]').textContent =
+          formatCurrency(interestPaid);
 
-          // Announce results to screen readers
-          const resultsRegion = calculator.querySelector(
-            ".calculator-block__results"
-          );
-          resultsRegion.setAttribute("aria-busy", "false");
+        // If email is provided, send results
+        if (email !== '') {
+          const data = new FormData();
+          data.append('action', 'send_calculator_results');
+          data.append('nonce', window.calculatorData?.nonce || '');
+          data.append('email', email);
+          data.append('balance', balance);
+          data.append('interest', interest);
+          data.append('debtType', debtType);
+          data.append('monthly', monthly);
+          data.append('months', Math.round(months));
+          data.append('principal', principal);
+          data.append('totalInterest', interestPaid);
+
+          fetch(window.calculatorData?.ajaxurl || '/wp-admin/admin-ajax.php', {
+            method: 'POST',
+            credentials: 'same-origin',
+            body: data,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                alert('Results have been sent to your email!');
+              } else {
+                alert('Failed to send email: ' + (data.data || 'Please try again.'));
+              }
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+              alert('Failed to send email. Please try again.');
+            });
         }
+
+        // Announce results to screen readers
+        results.setAttribute('aria-busy', 'false');
       });
     }
   });
