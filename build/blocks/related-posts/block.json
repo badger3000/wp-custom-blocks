@@ -1,0 +1,54 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "custom-blocks/related-posts",
+  "version": "0.1.0",
+  "title": "Related Posts",
+  "category": "widgets",
+  "icon": "admin-post",
+  "description": "Display related posts based on tags or categories",
+  "supports": {
+    "html": false,
+    "align": [
+      "wide",
+      "full"
+    ]
+  },
+  "attributes": {
+    "relatedPostsId": {
+      "type": "string"
+    },
+    "filterBy": {
+      "type": "string",
+      "default": "categories"
+    },
+    "numberOfPosts": {
+      "type": "number",
+      "default": 3
+    },
+    "displayLayout": {
+      "type": "string",
+      "default": "grid"
+    },
+    "showFeaturedImage": {
+      "type": "boolean",
+      "default": true
+    },
+    "showExcerpt": {
+      "type": "boolean",
+      "default": true
+    },
+    "showDate": {
+      "type": "boolean",
+      "default": true
+    },
+    "showAuthor": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "textdomain": "custom-blocks",
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

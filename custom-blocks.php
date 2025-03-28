@@ -27,6 +27,7 @@ if (!defined('ABSPATH')) {
 function create_block_custom_blocks_block_init() {
     register_block_type(__DIR__ . '/build/blocks/calculator');
     register_block_type(__DIR__ . '/build/blocks/sample-block');
+    register_block_type(__DIR__ . '/build/blocks/related-posts');
 }
 add_action('init', 'create_block_custom_blocks_block_init');
 

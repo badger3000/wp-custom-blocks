@@ -1,0 +1,13 @@
+// Editor-specific styles
+.wp-block-custom-blocks-related-posts {
+    // Add padding in editor for better visibility
+    padding: 1rem;
+    border: 1px dashed #ccc;
+    
+    // Style placeholder text
+    &:empty::before {
+        content: 'Related Posts';
+        color: #888;
+        font-style: italic;
+    }
+}
