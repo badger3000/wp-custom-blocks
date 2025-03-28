@@ -1,49 +1,155 @@
 .wp-block-custom-blocks-related-posts {
-    margin: 2em 0;
+  margin: 2rem 0;
+  position: relative;
 
-    .related-posts-grid {
-        display: grid;
-        gap: 2rem;
-        
-        &.layout-grid {
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        }
-        
-        &.layout-list {
-            grid-template-columns: 1fr;
-        }
+  .related-posts-grid {
+    display: grid;
+    gap: 2rem;
+
+    &.layout-grid {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
 
-    .related-post-item {
-        background: #fff;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        
-        img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-        
-        h3 {
-            margin: 1rem;
-            font-size: 1.2em;
-            line-height: 1.4;
-        }
-        
-        .excerpt {
-            margin: 0 1rem 1rem;
-            font-size: 0.9em;
-            line-height: 1.6;
-            color: #666;
-        }
-        
-        .post-date,
-        .post-author {
-            margin: 0 1rem 1rem;
-            font-size: 0.8em;
-            color: #888;
-        }
+    &.layout-list {
+      grid-template-columns: 1fr;
     }
+  }
+
+  .related-post-item {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    h3 {
+      margin: 1rem;
+      font-size: 1.2em;
+      line-height: 1.4;
+    }
+
+    .excerpt {
+      margin: 0 1rem 1rem;
+      font-size: 0.9em;
+      line-height: 1.6;
+      color: #666;
+    }
+
+    .post-date,
+    .post-author {
+      margin: 0 1rem 1rem;
+      font-size: 0.8em;
+      color: #888;
+    }
+  }
+
+  .swiper {
+    padding-bottom: 3rem;
+  }
+
+  .swiper-button-next,
+  .swiper-button-prev {
+    color: #007cba;
+    
+    &:after {
+      font-size: 24px;
+    }
+
+    &:hover {
+      color: #005a87;
+    }
+  }
+
+  .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    background: #ccc;
+    opacity: 1;
+
+    &-active {
+      background: #007cba;
+    }
+  }
+}
+
+.related-post-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+  height: 100%;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  .card-image {
+    position: relative;
+    padding-top: 56.25%; /* 16:9 aspect ratio */
+    overflow: hidden;
+
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .card-tag {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: #007cba;
+    color: #fff;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+  }
+
+  .card-content {
+    padding: 1.5rem;
+  }
+
+  .card-title {
+    margin: 0 0 1rem;
+    font-size: 1.25rem;
+    line-height: 1.4;
+  }
+
+  .card-excerpt {
+    color: #666;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  .card-date {
+    color: #888;
+    font-size: 0.875rem;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 639px) {
+  .related-post-card {
+    .card-content {
+      padding: 1rem;
+    }
+
+    .card-title {
+      font-size: 1.125rem;
+    }
+  }
 }

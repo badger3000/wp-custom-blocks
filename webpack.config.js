@@ -128,59 +128,66 @@ module.exports = {
     ),
   ],
 
-  // Customize module rules for SCSS
   module: {
     ...defaultConfig.module,
-    rules: defaultConfig.module.rules.map((rule) => {
-      // Find the rule that processes SCSS files
-      if (rule.test && rule.test.toString().includes("scss")) {
-        return {
-          ...rule,
-          use: rule.use.map((loader) => {
-            // Customize MiniCssExtractPlugin loader
-            if (
-              loader.loader &&
-              loader.loader.includes("mini-css-extract-plugin")
-            ) {
-              return {
-                ...loader,
-                options: {
-                  ...loader.options,
-                  // Ensure CSS files go to block directories
-                  moduleFilename: (pathData) => {
-                    const relativePath = pathData.chunk.name;
+    rules: [
+      ...defaultConfig.module.rules.filter(rule => {
+        if (rule.test && rule.test.toString().includes("scss")) {
+          return {
+            ...rule,
+            use: rule.use.map((loader) => {
+              // Customize MiniCssExtractPlugin loader
+              if (loader.loader && loader.loader.includes("mini-css-extract-plugin")) {
+                return {
+                  ...loader,
+                  options: {
+                    ...loader.options,
+                    // Ensure CSS files go to block directories
+                    moduleFilename: (pathData) => {
+                      const relativePath = pathData.chunk.name;
 
-                    // Skip files that aren't in block directories
-                    if (!relativePath || !relativePath.includes("blocks/")) {
-                      return "ignored.css"; // Will be cleaned up
-                    }
-
-                    const blockPath = relativePath.substring(
-                      0,
-                      relativePath.lastIndexOf("/")
-                    );
-
-                    // Set appropriate filename based on source
-                    if (pathData.context.resource) {
-                      const resource = pathData.context.resource;
-                      if (resource.endsWith("editor.scss")) {
-                        return `${blockPath}/index.css`;
-                      } else if (resource.endsWith("style.scss")) {
-                        return `${blockPath}/style-index.css`;
+                      // Skip files that aren't in block directories
+                      if (!relativePath || !relativePath.includes("blocks/")) {
+                        return "ignored.css"; // Will be cleaned up
                       }
-                    }
 
-                    // Default fallback
-                    return `${blockPath}/index.css`;
+                      const blockPath = relativePath.substring(
+                        0,
+                        relativePath.lastIndexOf("/")
+                      );
+
+                      // Set appropriate filename based on source
+                      if (pathData.context.resource) {
+                        const resource = pathData.context.resource;
+                        if (resource.endsWith("editor.scss")) {
+                          return `${blockPath}/index.css`;
+                        } else if (resource.endsWith("style.scss")) {
+                          return `${blockPath}/style-index.css`;
+                        }
+                      }
+
+                      // Default fallback
+                      return `${blockPath}/index.css`;
+                    },
                   },
-                },
-              };
-            }
-            return loader;
-          }),
-        };
-      }
-      return rule;
-    }),
+                };
+              }
+              return loader;
+            }),
+          };
+        }
+        return rule;
+      }),
+    ],
   },
+
+  resolve: {
+    ...defaultConfig.resolve,
+    alias: {
+      ...defaultConfig.resolve?.alias,
+      'swiper/css': 'swiper/css',
+      'swiper/css/navigation': 'swiper/modules/navigation/navigation.css',
+      'swiper/css/pagination': 'swiper/modules/pagination/pagination.css'
+    }
+  }
 };

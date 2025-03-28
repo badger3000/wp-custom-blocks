@@ -6,7 +6,7 @@
   "title": "Related Posts",
   "category": "widgets",
   "icon": "admin-post",
-  "description": "Display related posts based on tags or categories",
+  "description": "Display related posts in a carousel",
   "supports": {
     "html": false,
     "align": [
@@ -24,11 +24,7 @@
     },
     "numberOfPosts": {
       "type": "number",
-      "default": 3
-    },
-    "displayLayout": {
-      "type": "string",
-      "default": "grid"
+      "default": 6
     },
     "showFeaturedImage": {
       "type": "boolean",
@@ -42,13 +38,30 @@
       "type": "boolean",
       "default": true
     },
-    "showAuthor": {
+    "showTags": {
       "type": "boolean",
-      "default": false
+      "default": true
+    },
+    "slidesPerView": {
+      "type": "number",
+      "default": 3
+    },
+    "autoplay": {
+      "type": "boolean",
+      "default": true
+    },
+    "autoplayDelay": {
+      "type": "number",
+      "default": 3000
+    },
+    "loop": {
+      "type": "boolean",
+      "default": true
     }
   },
   "textdomain": "custom-blocks",
   "editorScript": "file:./index.js",
+  "viewScript": "file:./view.js",
   "style": "file:./style-index.css",
   "render": "file:./render.php"
 }

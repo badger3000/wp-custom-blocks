@@ -77,88 +77,93 @@ function get_related_posts($attributes) {
 }
 
 function render_block_related_posts($attributes, $content, $block = null) {
-    error_log('Related Posts - Starting render function');
-    error_log('Related Posts - Block context: ' . print_r($block, true));
-    
     // Check if we're in the block editor
     $is_editor = defined('REST_REQUEST') && REST_REQUEST;
     
     if ($is_editor) {
         return '<div class="wp-block-custom-blocks-related-posts">
-            <p>' . __('Related posts will appear here on the live site.', 'custom-blocks') . '</p>
+            <p>' . __('Related posts carousel will appear here on the live site.', 'custom-blocks') . '</p>
         </div>';
     }
     
     // Get related posts
     $related_posts = get_related_posts($attributes);
     
-    // Start output
-    $output = '';
-    
-    // Add debug info for admins
-    if (current_user_can('manage_options')) {
-        global $post;
-        $output .= '<div style="background: #f0f0f0; padding: 10px; margin: 10px 0; border: 1px solid #ccc;">';
-        $output .= '<strong>Related Posts Debug:</strong><br>';
-        $output .= 'Current Post ID: ' . (isset($post) ? $post->ID : 'No global post') . '<br>';
-        $output .= 'get_the_ID(): ' . get_the_ID() . '<br>';
-        $output .= 'is_single(): ' . (is_single() ? 'true' : 'false') . '<br>';
-        $output .= 'Found Posts: ' . count($related_posts) . '<br>';
-        $output .= '</div>';
-    }
-    
     if (empty($related_posts)) {
-        return $output . '<div class="wp-block-custom-blocks-related-posts">
+        return '<div class="wp-block-custom-blocks-related-posts">
             <p>' . __('No related posts found.', 'custom-blocks') . '</p>
         </div>';
     }
     
-    $output .= sprintf(
-        '<div class="wp-block-custom-blocks-related-posts layout-%s">
-            <div class="related-posts-grid">',
-        isset($attributes['displayLayout']) ? esc_attr($attributes['displayLayout']) : 'grid'
+    // Get fallback image URL
+    $fallback_image = plugins_url('assets/images/placeholder.svg', dirname(dirname(dirname(__FILE__))));
+
+    // Start output
+    $output = sprintf(
+        '<div class="wp-block-custom-blocks-related-posts" data-slides-per-view="%d" data-autoplay="%s" data-delay="%d" data-loop="%s">',
+        isset($attributes['slidesPerView']) ? intval($attributes['slidesPerView']) : 3,
+        isset($attributes['autoplay']) ? 'true' : 'false',
+        isset($attributes['autoplayDelay']) ? intval($attributes['autoplayDelay']) : 3000,
+        isset($attributes['loop']) ? 'true' : 'false'
     );
+    
+    // Add Swiper container
+    $output .= '<div class="swiper">
+        <div class="swiper-wrapper">';
     
     foreach ($related_posts as $related_post) {
         $post_link = get_permalink($related_post);
-        $output .= '<div class="related-post-item">';
-        
-        if (isset($attributes['showFeaturedImage']) && $attributes['showFeaturedImage'] && has_post_thumbnail($related_post)) {
-            $output .= get_the_post_thumbnail($related_post, 'medium');
+        $image = get_the_post_thumbnail_url($related_post->ID, 'medium');
+        if (!$image) {
+            $image = $fallback_image;
         }
         
+        $tags = get_the_tags($related_post->ID);
+        $first_tag = $tags ? $tags[0]->name : '';
+        
+        $output .= '<div class="swiper-slide">
+            <a href="' . esc_url($post_link) . '" class="related-post-card">';
+            
+        // Image container
+        $output .= '<div class="card-image">';
         $output .= sprintf(
-            '<h3><a href="%s">%s</a></h3>',
-            esc_url($post_link),
-            esc_html(get_the_title($related_post))
+            '<img src="%s" alt="%s" loading="lazy" />',
+            esc_url($image),
+            esc_attr($related_post->post_title)
         );
         
-        if (isset($attributes['showExcerpt']) && $attributes['showExcerpt']) {
+        // Show tag if enabled and exists
+        if (isset($attributes['showTags']) && $attributes['showTags'] && $first_tag) {
             $output .= sprintf(
-                '<div class="excerpt">%s</div>',
-                wp_trim_words(get_the_excerpt($related_post), 20)
+                '<span class="card-tag">%s</span>',
+                esc_html($first_tag)
             );
+        }
+        $output .= '</div>';
+
+        // Content container
+        $output .= '<div class="card-content">';
+        
+        $output .= '<h3 class="card-title">' . esc_html(get_the_title($related_post)) . '</h3>';
+        
+        if (isset($attributes['showExcerpt']) && $attributes['showExcerpt']) {
+            $output .= '<div class="card-excerpt">' . wp_trim_words(get_the_excerpt($related_post), 15) . '</div>';
         }
         
         if (isset($attributes['showDate']) && $attributes['showDate']) {
-            $output .= sprintf(
-                '<div class="post-date">%s</div>',
-                esc_html(get_the_date('', $related_post))
-            );
+            $output .= '<div class="card-date">' . esc_html(get_the_date('', $related_post)) . '</div>';
         }
         
-        if (isset($attributes['showAuthor']) && $attributes['showAuthor']) {
-            $output .= sprintf(
-                '<div class="post-author">%s %s</div>',
-                __('By', 'custom-blocks'),
-                esc_html(get_the_author_meta('display_name', $related_post->post_author))
-            );
-        }
+        $output .= '</div>'; // End card-content
         
-        $output .= '</div>';
+        $output .= '</a></div>';
     }
     
-    $output .= '</div></div>';
+    $output .= '</div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div></div>';
     
     return $output;
 }

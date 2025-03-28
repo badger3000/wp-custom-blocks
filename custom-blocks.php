@@ -51,8 +51,19 @@ function custom_blocks_enqueue_scripts() {
             'nonce' => wp_create_nonce('calculator_email_nonce')
         ));
     }
+    // Only enqueue Swiper assets if the related posts block is present
+    if (has_block('custom-blocks/related-posts')) {
+        wp_enqueue_style(
+            'swiper',
+            'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css',
+            [],
+            '11.0.5'
+        );
+    }
 }
 add_action('wp_enqueue_scripts', 'custom_blocks_enqueue_scripts');
+
+
 
 /**
  * Handle sending calculator results via email
