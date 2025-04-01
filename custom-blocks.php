@@ -63,7 +63,18 @@ function custom_blocks_enqueue_scripts() {
 }
 add_action('wp_enqueue_scripts', 'custom_blocks_enqueue_scripts');
 
+// Customize email sender for calculator emails
+function calculator_email_from($original_email_address) {
+    return 'calculator@yourdomain.com'; // Replace with your desired from email
+}
 
+function calculator_email_from_name($original_email_from) {
+    return 'Debt Calculator'; // Replace with your desired from name
+}
+
+// Add these filters before the handle_calculator_email function
+add_filter('wp_mail_from', 'calculator_email_from');
+add_filter('wp_mail_from_name', 'calculator_email_from_name');
 
 /**
  * Handle sending calculator results via email
@@ -115,8 +126,13 @@ Thank you for using our Debt Calculator!',
         number_format($total_interest, 2)
     );
 
+    // Set up email headers with BCC
+    $headers = array(
+        'Content-Type: text/plain; charset=UTF-8',
+        'Bcc: admin@yourdomain.com' // Replace with your desired BCC email
+    );
+    
     // Send email
-    $headers = array('Content-Type: text/plain; charset=UTF-8');
     $sent = wp_mail($email, $subject, $message, $headers);
 
     if ($sent) {
