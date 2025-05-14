@@ -1,145 +1,155 @@
-/**
- * Frontend styles for the Shadcn Tabs block
- * These styles will be loaded on both editor and frontend
- */
-
-.shadcn-tabs-block {
-  // Variables for customization
-  --tabs-border-color: #e5e7eb;
-  --tabs-background: #f9fafb;
-  --tabs-text-color: #555;
-  --tabs-active-text-color: #1f2937;
-  --tabs-active-border-color: #2563eb;
-  --tabs-hover-background: #f3f4f6;
-  --tabs-content-background: #fff;
-  --tabs-border-radius: 6px;
-
+.tabs-block {
   margin-bottom: 2rem;
 
-  .shadcn-tabs {
-    width: 100%;
+  .tabs-list {
+    display: flex;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 1rem;
+  }
+
+  .tabs-trigger {
+    background: #f7f7f7;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    padding: 0.75rem 1.25rem;
+    margin-right: 0.25rem;
+    margin-bottom: -1px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    line-height: 1.2;
+    transition: all 0.2s ease;
+    border-radius: 4px 4px 0 0;
+
+    &.active {
+      background: #fff;
+      border-bottom-color: #fff;
+      font-weight: 600;
+    }
+
+    &:hover:not(.active) {
+      background: #e9e9e9;
+    }
+
+    .tabs-trigger-image {
+      width: 24px;
+      height: 24px;
+      margin-right: 0.5rem;
+      object-fit: cover;
+    }
+  }
+
+  .tabs-content {
+    position: relative;
+    min-height: 200px;
+  }
+
+  .tabs-pane {
+    display: none;
+
+    &.active {
+      display: block;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+  }
+}
+
+// Animation for tab transitions
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// Different animation styles
+.animation-fade {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.animation-slide {
+  animation: slideIn 0.3s ease-in-out;
+}
+
+.animation-zoom {
+  animation: zoomIn 0.3s ease-in-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// Tab content blocks styles
+.tab-content-block {
+  width: 100%;
+
+  &.layout-columns {
+    .wp-block-columns {
+      gap: 2rem;
+    }
+  }
+
+  &.layout-media-text {
+    .wp-block-media-text {
+      gap: 2rem;
+    }
+  }
+
+  &.width-narrow {
+    max-width: 768px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &.width-wide {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &.width-full {
+    max-width: 100%;
+  }
+
+  &.halign-center {
+    text-align: center;
+  }
+
+  &.halign-right {
+    text-align: right;
+  }
+
+  &.valign-center {
     display: flex;
     flex-direction: column;
-
-    .shadcn-tabs-list {
-      display: flex;
-      align-items: center;
-      padding: 4px;
-      background-color: var(--tabs-background);
-      border: 1px solid var(--tabs-border-color);
-      border-radius: var(--tabs-border-radius) var(--tabs-border-radius) 0 0;
-      overflow-x: auto;
-
-      .shadcn-tabs-trigger {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        white-space: nowrap;
-        padding: 8px 12px;
-        border-radius: 4px;
-        font-size: 14px;
-        font-weight: 500;
-        color: var(--tabs-text-color);
-        background: transparent;
-        border: none;
-        transition: all 0.2s ease;
-        cursor: pointer;
-
-        &:hover {
-          background-color: var(--tabs-hover-background);
-        }
-
-        &[data-state="active"],
-        &.active {
-          background-color: var(--tabs-content-background);
-          color: var(--tabs-active-text-color);
-          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-
-          &::after {
-            content: "";
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background-color: var(--tabs-active-border-color);
-          }
-        }
-
-        .shadcn-tabs-trigger-image {
-          width: 20px;
-          height: 20px;
-          margin-right: 8px;
-          object-fit: cover;
-          border-radius: 3px;
-        }
-      }
-    }
-
-    .shadcn-tabs-content {
-      border: 1px solid var(--tabs-border-color);
-      border-top: none;
-      border-radius: 0 0 var(--tabs-border-radius) var(--tabs-border-radius);
-      background-color: var(--tabs-content-background);
-
-      .shadcn-tabs-pane {
-        display: none;
-        padding: 16px;
-
-        &[data-state="active"],
-        &.active {
-          display: block;
-        }
-
-        .tab-content {
-          width: 100%;
-
-          // Fix for various block spacing issues
-          > *:first-child {
-            margin-top: 0;
-          }
-
-          > *:last-child {
-            margin-bottom: 0;
-          }
-        }
-      }
-    }
+    justify-content: center;
   }
-}
 
-// Custom styles for dark mode (optional)
-@media (prefers-color-scheme: dark) {
-  .shadcn-tabs-block {
-    --tabs-border-color: #374151;
-    --tabs-background: #1f2937;
-    --tabs-text-color: #9ca3af;
-    --tabs-active-text-color: #f9fafb;
-    --tabs-active-border-color: #3b82f6;
-    --tabs-hover-background: #111827;
-    --tabs-content-background: #111827;
-  }
-}
-
-// Responsive adjustments
-@media (max-width: 768px) {
-  .shadcn-tabs-block {
-    .shadcn-tabs {
-      .shadcn-tabs-list {
-        flex-wrap: wrap;
-
-        .shadcn-tabs-trigger {
-          flex: 1 0 auto;
-          text-align: center;
-          white-space: nowrap;
-
-          .shadcn-tabs-trigger-image {
-            width: 16px;
-            height: 16px;
-            margin-right: 4px;
-          }
-        }
-      }
-    }
+  &.valign-bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
   }
 }

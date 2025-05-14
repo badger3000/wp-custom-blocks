@@ -1,161 +1,114 @@
-/**
- * Editor styles for the Shadcn Tabs block
- */
+.wp-block-tabs-editor {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 1rem;
 
-.wp-block-my-plugin-shadcn-tabs {
-  margin-bottom: 2rem;
+  .tabs-header {
+    display: flex;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 1rem;
 
-  // Inspector controls
-  .tab-settings-panel {
-    padding: 12px;
-    margin-bottom: 16px;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
+    .tab-button {
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+      border-bottom: none;
+      padding: 0.5rem 1rem;
+      margin-right: 0.25rem;
+      margin-bottom: -1px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
 
-    .tab-header {
-      margin-bottom: 12px;
-
-      .tab-title {
-        margin: 0;
-        font-size: 14px;
+      &.active {
+        background: #fff;
+        border-bottom-color: #fff;
         font-weight: 600;
       }
-    }
 
-    .tab-image-upload {
-      margin-top: 12px;
-
-      p {
-        margin: 0 0 6px;
-        font-size: 11px;
-        text-transform: uppercase;
-        font-weight: 500;
-        color: #757575;
-      }
-
-      .tab-image-preview {
-        margin-bottom: 8px;
-
-        img.tab-thumbnail {
-          max-width: 100px;
-          max-height: 60px;
-          object-fit: cover;
-          border-radius: 4px;
-          margin-bottom: 8px;
-          border: 1px solid #e0e0e0;
-        }
-
-        .tab-image-buttons {
-          margin-top: 8px;
-        }
-      }
-
-      .tab-upload-button {
-        width: 100%;
+      .tab-image {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+        object-fit: cover;
       }
     }
-  }
 
-  .add-tab-button {
-    width: 100%;
-    justify-content: center;
-    margin-top: 16px;
-  }
-
-  // Editor tabs interface
-  .wp-block-shadcn-tabs-editor {
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    overflow: hidden;
-
-    .tabs-header {
+    .add-tab-inline {
+      background: #f0f0f0;
+      border: 1px dashed #ccc;
+      width: 30px;
+      height: 30px;
       display: flex;
-      background-color: #f7f7f7;
-      border-bottom: 1px solid #e0e0e0;
-      overflow-x: auto;
-      position: relative;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin-left: 0.5rem;
+      border-radius: 4px;
+      color: #555;
 
-      .tab-button {
-        display: flex;
-        align-items: center;
-        padding: 12px 16px;
-        border: none;
-        background: transparent;
-        cursor: pointer;
-        font-size: 14px;
-        color: #555;
-        white-space: nowrap;
-
-        &.active {
-          background-color: #fff;
-          color: #007cba;
-          position: relative;
-
-          &::after {
-            content: "";
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background-color: #007cba;
-          }
-        }
-
-        .tab-image {
-          width: 20px;
-          height: 20px;
-          margin-right: 8px;
-          object-fit: cover;
-          border-radius: 3px;
-        }
-
-        &:hover:not(.active) {
-          background-color: #f0f0f0;
-        }
-      }
-
-      .add-tab-inline {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0;
-        width: 32px;
-        border: none;
-        background: transparent;
-        font-size: 20px;
-        font-weight: bold;
-        color: #757575;
-        cursor: pointer;
-
-        &:hover {
-          color: #007cba;
-        }
+      &:hover {
+        background: #e0e0e0;
       }
     }
+  }
 
-    .tabs-content {
-      position: relative;
+  .tabs-content {
+    min-height: 150px;
 
-      .tab-panel {
-        padding: 16px;
-        background-color: #fff;
+    .tab-panel {
+      border: 1px dashed #ddd;
+      padding: 1rem;
+      border-radius: 4px;
 
-        &.hidden {
-          display: none;
-        }
-
-        .block-editor-block-list__layout {
-          min-height: 100px;
-        }
+      &.hidden {
+        display: none;
       }
     }
   }
 }
 
-// Add a visual indicator when a tab is selected in the editor
-.is-selected .wp-block-my-plugin-shadcn-tabs {
-  .wp-block-shadcn-tabs-editor {
-    border-color: #007cba;
+.tab-settings-panel {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #ddd;
+
+  .tab-header {
+    margin-bottom: 1rem;
   }
+
+  .tab-title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .tab-image-upload {
+    margin-top: 1rem;
+
+    .tab-image-preview {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 0.5rem;
+
+      .tab-thumbnail {
+        max-width: 100px;
+        max-height: 100px;
+        object-fit: cover;
+        margin-bottom: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+    }
+  }
+}
+
+.add-tab-button {
+  width: 100%;
+}
+
+.tab-content-edit-container {
+  padding: 1rem;
+  border: 1px dashed #ddd;
+  border-radius: 4px;
 }

@@ -1,22 +1,22 @@
 /**
- * View script for the Shadcn Tabs block
+ * View script for the Tabs block
  * This script handles tab functionality on the frontend
  */
 
 document.addEventListener("DOMContentLoaded", function () {
-  initShadcnTabs();
+  initTabs();
 });
 
 /**
  * Initialize the tab functionality
  */
-function initShadcnTabs() {
-  const tabBlocks = document.querySelectorAll(".shadcn-tabs-block");
+function initTabs() {
+  const tabBlocks = document.querySelectorAll(".tabs-block");
 
   tabBlocks.forEach((block) => {
-    const tabsContainer = block.querySelector(".shadcn-tabs");
-    const tabTriggers = block.querySelectorAll(".shadcn-tabs-trigger");
-    const tabPanes = block.querySelectorAll(".shadcn-tabs-pane");
+    const tabsContainer = block.querySelector(".tabs");
+    const tabTriggers = block.querySelectorAll(".tabs-trigger");
+    const tabPanes = block.querySelectorAll(".tabs-pane");
 
     // Set initial active tab
     const initialActiveTab = tabsContainer.getAttribute("data-active-tab");
@@ -73,15 +73,4 @@ function initShadcnTabs() {
       });
     });
   });
-}
-
-// Re-initialize tabs when Gutenberg replaces content in editor preview
-if (typeof window.wp !== "undefined" && window.wp.hooks) {
-  window.wp.hooks.addAction(
-    "blocks.registerBlockType",
-    "my-plugin/shadcn-tabs",
-    function () {
-      initShadcnTabs();
-    }
-  );
 }

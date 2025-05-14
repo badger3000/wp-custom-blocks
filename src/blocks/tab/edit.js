@@ -3,32 +3,17 @@
  */
 import {__} from "@wordpress/i18n";
 import {
+  InspectorControls,
   InnerBlocks,
   useBlockProps,
-  InspectorControls,
-  BlockControls,
-  AlignmentToolbar,
-  useInnerBlocksProps,
 } from "@wordpress/block-editor";
-import {
-  Panel,
-  PanelBody,
-  SelectControl,
-  ToggleControl,
-  Button,
-  ButtonGroup,
-  Flex,
-  FlexItem,
-  __experimentalBoxControl as BoxControl,
-} from "@wordpress/components";
+import {PanelBody, SelectControl, RadioControl} from "@wordpress/components";
+import {getPatternTemplate} from "./patterns";
 
 /**
- * Edit component for the Tab Content block
- *
- * @param {Object} props Block props
- * @return {JSX.Element} Block edit component
+ * Edit component for the Tab block
  */
-function Edit({attributes, setAttributes, clientId}) {
+function Edit({attributes, setAttributes}) {
   const {
     contentLayout,
     verticalAlignment,
@@ -37,214 +22,108 @@ function Edit({attributes, setAttributes, clientId}) {
     animationEffect,
   } = attributes;
 
-  // Define allowed blocks - allow everything except the parent tabs block
-  const ALLOWED_BLOCKS = ["core/*"];
-
-  // Block patterns to showcase in the block inserter
-  const TEMPLATE = [
-    [
-      "core/heading",
-      {level: 3, content: __("Tab Content Heading", "my-plugin")},
-    ],
-    [
-      "core/paragraph",
-      {
-        content: __(
-          "Add content for this tab here. You can use any blocks or patterns.",
-          "my-plugin"
-        ),
-      },
-    ],
+  // Get layout options
+  const layoutOptions = [
+    {label: __("Default", "custom-blocks"), value: "default"},
+    {label: __("Columns", "custom-blocks"), value: "columns"},
+    {label: __("Media & Text", "custom-blocks"), value: "media-text"},
   ];
 
-  // Set block props with additional classes based on attributes
+  // Get width options
+  const widthOptions = [
+    {label: __("Wide", "custom-blocks"), value: "wide"},
+    {label: __("Full", "custom-blocks"), value: "full"},
+    {label: __("Narrow", "custom-blocks"), value: "narrow"},
+  ];
+
+  // Get animation options
+  const animationOptions = [
+    {label: __("None", "custom-blocks"), value: "none"},
+    {label: __("Fade", "custom-blocks"), value: "fade"},
+    {label: __("Slide", "custom-blocks"), value: "slide"},
+    {label: __("Zoom", "custom-blocks"), value: "zoom"},
+  ];
+  // Initialize with pattern template if patternType is set and not yet initialized
+  useEffect(() => {
+    if (!initialized && patternType && getPatternTemplate) {
+      const template = getPatternTemplate(patternType);
+      // Create blocks from template or set inner blocks
+      setInitialized(true);
+    }
+  }, [patternType, initialized]);
+
+  // Prepare block props
   const blockProps = useBlockProps({
     className: `tab-content-block layout-${contentLayout} valign-${verticalAlignment} halign-${horizontalAlignment} width-${contentWidth} animation-${animationEffect}`,
   });
 
-  // Set inner blocks props
-  const innerBlocksProps = useInnerBlocksProps(blockProps, {
-    allowedBlocks: ALLOWED_BLOCKS,
-    template: TEMPLATE,
-    templateLock: false,
-    renderAppender: () => <InnerBlocks.ButtonBlockAppender />,
-  });
-
-  // Layout options
-  const layoutOptions = [
-    {value: "default", label: __("Default", "my-plugin")},
-    {value: "columns", label: __("Columns", "my-plugin")},
-    {value: "cards", label: __("Cards", "my-plugin")},
-    {value: "media-text", label: __("Media & Text", "my-plugin")},
-  ];
-
-  // Animation options
-  const animationOptions = [
-    {value: "none", label: __("None", "my-plugin")},
-    {value: "fade", label: __("Fade In", "my-plugin")},
-    {value: "slide", label: __("Slide In", "my-plugin")},
-    {value: "zoom", label: __("Zoom In", "my-plugin")},
-  ];
-
-  // Content width options
-  const widthOptions = [
-    {value: "wide", label: __("Wide", "my-plugin")},
-    {value: "narrow", label: __("Narrow", "my-plugin")},
-    {value: "full", label: __("Full Width", "my-plugin")},
-  ];
-
   return (
-    <>
-      <BlockControls>
-        <AlignmentToolbar
-          value={horizontalAlignment}
-          onChange={(value) =>
-            setAttributes({horizontalAlignment: value || "left"})
-          }
-        />
-      </BlockControls>
-
+    <div {...blockProps}>
       <InspectorControls>
-        <Panel>
-          <PanelBody
-            title={__("Content Settings", "my-plugin")}
-            initialOpen={true}
-          >
-            <SelectControl
-              label={__("Layout Type", "my-plugin")}
-              value={contentLayout}
-              options={layoutOptions}
-              onChange={(value) => setAttributes({contentLayout: value})}
-              help={__(
-                "Select a layout preset for this tab content",
-                "my-plugin"
-              )}
-            />
+        <PanelBody title={__("Layout Settings", "custom-blocks")}>
+          <SelectControl
+            label={__("Content Layout", "custom-blocks")}
+            value={contentLayout}
+            options={layoutOptions}
+            onChange={(value) => setAttributes({contentLayout: value})}
+          />
 
-            <SelectControl
-              label={__("Content Width", "my-plugin")}
-              value={contentWidth}
-              options={widthOptions}
-              onChange={(value) => setAttributes({contentWidth: value})}
-            />
+          <SelectControl
+            label={__("Content Width", "custom-blocks")}
+            value={contentWidth}
+            options={widthOptions}
+            onChange={(value) => setAttributes({contentWidth: value})}
+          />
 
-            <p>{__("Vertical Alignment", "my-plugin")}</p>
-            <ButtonGroup>
-              <Button
-                isSmall
-                isPrimary={verticalAlignment === "top"}
-                isSecondary={verticalAlignment !== "top"}
-                onClick={() => setAttributes({verticalAlignment: "top"})}
-              >
-                {__("Top", "my-plugin")}
-              </Button>
-              <Button
-                isSmall
-                isPrimary={verticalAlignment === "center"}
-                isSecondary={verticalAlignment !== "center"}
-                onClick={() => setAttributes({verticalAlignment: "center"})}
-              >
-                {__("Center", "my-plugin")}
-              </Button>
-              <Button
-                isSmall
-                isPrimary={verticalAlignment === "bottom"}
-                isSecondary={verticalAlignment !== "bottom"}
-                onClick={() => setAttributes({verticalAlignment: "bottom"})}
-              >
-                {__("Bottom", "my-plugin")}
-              </Button>
-            </ButtonGroup>
-          </PanelBody>
+          <RadioControl
+            label={__("Vertical Alignment", "custom-blocks")}
+            selected={verticalAlignment}
+            options={[
+              {label: __("Top", "custom-blocks"), value: "top"},
+              {label: __("Center", "custom-blocks"), value: "center"},
+              {label: __("Bottom", "custom-blocks"), value: "bottom"},
+            ]}
+            onChange={(value) => setAttributes({verticalAlignment: value})}
+          />
 
-          <PanelBody title={__("Animation", "my-plugin")} initialOpen={false}>
-            <SelectControl
-              label={__("Tab Reveal Animation", "my-plugin")}
-              value={animationEffect}
-              options={animationOptions}
-              onChange={(value) => setAttributes({animationEffect: value})}
-              help={__("Animation when tab is revealed", "my-plugin")}
-            />
-          </PanelBody>
+          <RadioControl
+            label={__("Horizontal Alignment", "custom-blocks")}
+            selected={horizontalAlignment}
+            options={[
+              {label: __("Left", "custom-blocks"), value: "left"},
+              {label: __("Center", "custom-blocks"), value: "center"},
+              {label: __("Right", "custom-blocks"), value: "right"},
+            ]}
+            onChange={(value) => setAttributes({horizontalAlignment: value})}
+          />
+        </PanelBody>
 
-          <PanelBody title={__("Presets", "my-plugin")} initialOpen={false}>
-            <p>{__("Quick Layout Presets", "my-plugin")}</p>
-            <Flex gap={2} justify="flex-start" align="flex-start" wrap={true}>
-              <FlexItem style={{flexBasis: "48%", marginBottom: "10px"}}>
-                <Button
-                  isSecondary
-                  className="layout-preset-button"
-                  onClick={() => {
-                    setAttributes({
-                      contentLayout: "default",
-                      contentWidth: "wide",
-                      verticalAlignment: "top",
-                      horizontalAlignment: "left",
-                      animationEffect: "none",
-                    });
-                  }}
-                >
-                  {__("Default", "my-plugin")}
-                </Button>
-              </FlexItem>
-              <FlexItem style={{flexBasis: "48%", marginBottom: "10px"}}>
-                <Button
-                  isSecondary
-                  className="layout-preset-button"
-                  onClick={() => {
-                    setAttributes({
-                      contentLayout: "columns",
-                      contentWidth: "full",
-                      verticalAlignment: "top",
-                      horizontalAlignment: "center",
-                      animationEffect: "fade",
-                    });
-                  }}
-                >
-                  {__("Featured Content", "my-plugin")}
-                </Button>
-              </FlexItem>
-              <FlexItem style={{flexBasis: "48%", marginBottom: "10px"}}>
-                <Button
-                  isSecondary
-                  className="layout-preset-button"
-                  onClick={() => {
-                    setAttributes({
-                      contentLayout: "cards",
-                      contentWidth: "narrow",
-                      verticalAlignment: "center",
-                      horizontalAlignment: "center",
-                      animationEffect: "slide",
-                    });
-                  }}
-                >
-                  {__("Card Group", "my-plugin")}
-                </Button>
-              </FlexItem>
-              <FlexItem style={{flexBasis: "48%", marginBottom: "10px"}}>
-                <Button
-                  isSecondary
-                  className="layout-preset-button"
-                  onClick={() => {
-                    setAttributes({
-                      contentLayout: "media-text",
-                      contentWidth: "wide",
-                      verticalAlignment: "center",
-                      horizontalAlignment: "left",
-                      animationEffect: "zoom",
-                    });
-                  }}
-                >
-                  {__("Media Showcase", "my-plugin")}
-                </Button>
-              </FlexItem>
-            </Flex>
-          </PanelBody>
-        </Panel>
+        <PanelBody title={__("Animation Settings", "custom-blocks")}>
+          <SelectControl
+            label={__("Animation Effect", "custom-blocks")}
+            value={animationEffect}
+            options={animationOptions}
+            onChange={(value) => setAttributes({animationEffect: value})}
+          />
+        </PanelBody>
       </InspectorControls>
 
-      <div {...innerBlocksProps} />
-    </>
+      <div className="tab-content-edit-container">
+        <InnerBlocks
+          template={[
+            [
+              "core/heading",
+              {level: 3, content: __("Tab Content", "custom-blocks")},
+            ],
+            [
+              "core/paragraph",
+              {content: __("Add your content here...", "custom-blocks")},
+            ],
+          ]}
+          templateLock={false}
+        />
+      </div>
+    </div>
   );
 }
 

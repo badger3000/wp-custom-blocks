@@ -1,18 +1,21 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "name": "custom/tabs",
+  "name": "custom-blocks/tabs",
   "version": "1.0.0",
-  "title": "Shadcn Tabs",
+  "title": "Tabs",
   "category": "widgets",
   "icon": "table-row-after",
-  "description": "A tabs block using Shadcn UI components with image support",
-  "keywords": ["tabs", "content", "shadcn"],
+  "description": "A tabs block with image support",
+  "keywords": ["tabs", "content"],
   "supports": {
     "html": false,
     "anchor": true
   },
-  "textdomain": "my-plugin",
+  "providesContext": {
+    "custom-blocks/tabId": "activeTab"
+  },
+  "textdomain": "custom-blocks",
   "attributes": {
     "tabs": {
       "type": "array",

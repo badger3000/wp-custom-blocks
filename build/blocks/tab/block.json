@@ -1,20 +1,22 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "name": "custom/tab",
+  "name": "custom-blocks/tab",
   "version": "1.0.0",
   "title": "Tab Content",
   "category": "design",
   "icon": "table-col-after",
-  "description": "Content container optimized for use within tabs panels",
+  "description": "Content container for tab panels",
   "keywords": [
     "tabs",
     "content",
-    "panel",
-    "shadcn"
+    "panel"
   ],
   "parent": [
-    "custom/tabs"
+    "custom-blocks/tabs"
+  ],
+  "usesContext": [
+    "custom-blocks/tabId"
   ],
   "supports": {
     "html": false,
@@ -29,7 +31,7 @@
       "padding": true
     }
   },
-  "textdomain": "my-plugin",
+  "textdomain": "custom-blocks",
   "attributes": {
     "contentLayout": {
       "type": "string",
@@ -50,6 +52,10 @@
     "animationEffect": {
       "type": "string",
       "default": "none"
+    },
+    "tabId": {
+      "type": "string",
+      "default": ""
     }
   },
   "editorScript": "file:./index.js",
