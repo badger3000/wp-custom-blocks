@@ -28,6 +28,8 @@ function create_block_custom_blocks_block_init() {
     // Register blocks
     register_block_type(__DIR__ . '/build/blocks/calculator');
     register_block_type(__DIR__ . '/build/blocks/sample-block');
+    register_block_type(__DIR__ . '/build/blocks/tabs');
+    register_block_type(__DIR__ . '/build/blocks/tab');
     
     // Register related posts block with explicit render callback
     $related_posts_metadata = wp_json_file_decode(__DIR__ . '/build/blocks/related-posts/block.json', ['associative' => true]);
@@ -40,6 +42,7 @@ add_action('init', 'create_block_custom_blocks_block_init');
 
 // Ensure render function is available
 require_once __DIR__ . '/src/blocks/related-posts/render.php';
+require_once __DIR__ . '/src/blocks/tab/render.php';
 
 /**
  * Enqueue block scripts and localize data

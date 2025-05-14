@@ -1,0 +1,51 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "custom/tab",
+  "version": "1.0.0",
+  "title": "Tab Content",
+  "category": "design",
+  "icon": "table-col-after",
+  "description": "Content container optimized for use within tabs panels",
+  "keywords": ["tabs", "content", "panel", "shadcn"],
+  "parent": ["custom/tabs"],
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "color": {
+      "background": true,
+      "text": true,
+      "gradients": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    }
+  },
+  "textdomain": "my-plugin",
+  "attributes": {
+    "contentLayout": {
+      "type": "string",
+      "default": "default"
+    },
+    "verticalAlignment": {
+      "type": "string",
+      "default": "top"
+    },
+    "horizontalAlignment": {
+      "type": "string",
+      "default": "left"
+    },
+    "contentWidth": {
+      "type": "string",
+      "default": "wide"
+    },
+    "animationEffect": {
+      "type": "string",
+      "default": "none"
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

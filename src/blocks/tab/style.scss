@@ -1,0 +1,182 @@
+/**
+ * Tab Content block styles
+ * These styles apply to both editor and frontend
+ */
+
+.tab-content-block {
+  // Base styles
+  width: 100%;
+  box-sizing: border-box;
+
+  // Content width variations
+  &.width-narrow {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &.width-wide {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &.width-full {
+    max-width: 100%;
+  }
+
+  // Horizontal alignment variations
+  &.halign-center {
+    text-align: center;
+
+    > * {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .wp-block-buttons {
+      justify-content: center;
+    }
+  }
+
+  &.halign-right {
+    text-align: right;
+
+    > * {
+      margin-left: auto;
+      margin-right: 0;
+    }
+
+    .wp-block-buttons {
+      justify-content: flex-end;
+    }
+  }
+
+  // Vertical alignment variations
+  &.valign-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 300px;
+  }
+
+  &.valign-bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 300px;
+  }
+
+  // Layout variations
+  &.layout-columns {
+    .wp-block-columns {
+      gap: 2rem;
+    }
+
+    .wp-block {
+      height: 100%;
+    }
+  }
+
+  &.layout-cards {
+    .wp-block {
+      border-radius: 0.5rem;
+      overflow: hidden;
+      box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow:
+          0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+    }
+
+    .wp-block-columns {
+      gap: 2rem;
+    }
+  }
+
+  &.layout-media-text {
+    .wp-block-media-text {
+      grid-gap: 2rem;
+    }
+  }
+
+  // Animation effects
+  &.animation-fade {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  &.animation-slide {
+    animation: slideIn 0.5s ease-in-out;
+  }
+
+  &.animation-zoom {
+    animation: zoomIn 0.5s ease-in-out;
+  }
+}
+
+// Animation keyframes
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// Editor-specific styles
+.editor-styles-wrapper {
+  .tab-content-block {
+    // Visual indicators for the editor
+    padding: 1rem;
+    border: 1px dashed #ddd;
+
+    &:hover {
+      border-color: #007cba;
+    }
+
+    // Ensure good editorial experience for different layouts
+    &.layout-columns,
+    &.layout-cards {
+      .block-editor-inner-blocks {
+        width: 100%;
+      }
+    }
+  }
+
+  // Selected state
+  .is-selected .tab-content-block {
+    border-color: #007cba;
+    border-style: solid;
+  }
+}

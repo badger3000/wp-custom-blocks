@@ -1,0 +1,161 @@
+/**
+ * Editor styles for the Shadcn Tabs block
+ */
+
+.wp-block-my-plugin-shadcn-tabs {
+  margin-bottom: 2rem;
+
+  // Inspector controls
+  .tab-settings-panel {
+    padding: 12px;
+    margin-bottom: 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+
+    .tab-header {
+      margin-bottom: 12px;
+
+      .tab-title {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 600;
+      }
+    }
+
+    .tab-image-upload {
+      margin-top: 12px;
+
+      p {
+        margin: 0 0 6px;
+        font-size: 11px;
+        text-transform: uppercase;
+        font-weight: 500;
+        color: #757575;
+      }
+
+      .tab-image-preview {
+        margin-bottom: 8px;
+
+        img.tab-thumbnail {
+          max-width: 100px;
+          max-height: 60px;
+          object-fit: cover;
+          border-radius: 4px;
+          margin-bottom: 8px;
+          border: 1px solid #e0e0e0;
+        }
+
+        .tab-image-buttons {
+          margin-top: 8px;
+        }
+      }
+
+      .tab-upload-button {
+        width: 100%;
+      }
+    }
+  }
+
+  .add-tab-button {
+    width: 100%;
+    justify-content: center;
+    margin-top: 16px;
+  }
+
+  // Editor tabs interface
+  .wp-block-shadcn-tabs-editor {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+
+    .tabs-header {
+      display: flex;
+      background-color: #f7f7f7;
+      border-bottom: 1px solid #e0e0e0;
+      overflow-x: auto;
+      position: relative;
+
+      .tab-button {
+        display: flex;
+        align-items: center;
+        padding: 12px 16px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 14px;
+        color: #555;
+        white-space: nowrap;
+
+        &.active {
+          background-color: #fff;
+          color: #007cba;
+          position: relative;
+
+          &::after {
+            content: "";
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #007cba;
+          }
+        }
+
+        .tab-image {
+          width: 20px;
+          height: 20px;
+          margin-right: 8px;
+          object-fit: cover;
+          border-radius: 3px;
+        }
+
+        &:hover:not(.active) {
+          background-color: #f0f0f0;
+        }
+      }
+
+      .add-tab-inline {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        width: 32px;
+        border: none;
+        background: transparent;
+        font-size: 20px;
+        font-weight: bold;
+        color: #757575;
+        cursor: pointer;
+
+        &:hover {
+          color: #007cba;
+        }
+      }
+    }
+
+    .tabs-content {
+      position: relative;
+
+      .tab-panel {
+        padding: 16px;
+        background-color: #fff;
+
+        &.hidden {
+          display: none;
+        }
+
+        .block-editor-block-list__layout {
+          min-height: 100px;
+        }
+      }
+    }
+  }
+}
+
+// Add a visual indicator when a tab is selected in the editor
+.is-selected .wp-block-my-plugin-shadcn-tabs {
+  .wp-block-shadcn-tabs-editor {
+    border-color: #007cba;
+  }
+}

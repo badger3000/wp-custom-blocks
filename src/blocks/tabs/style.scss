@@ -1,0 +1,145 @@
+/**
+ * Frontend styles for the Shadcn Tabs block
+ * These styles will be loaded on both editor and frontend
+ */
+
+.shadcn-tabs-block {
+  // Variables for customization
+  --tabs-border-color: #e5e7eb;
+  --tabs-background: #f9fafb;
+  --tabs-text-color: #555;
+  --tabs-active-text-color: #1f2937;
+  --tabs-active-border-color: #2563eb;
+  --tabs-hover-background: #f3f4f6;
+  --tabs-content-background: #fff;
+  --tabs-border-radius: 6px;
+
+  margin-bottom: 2rem;
+
+  .shadcn-tabs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .shadcn-tabs-list {
+      display: flex;
+      align-items: center;
+      padding: 4px;
+      background-color: var(--tabs-background);
+      border: 1px solid var(--tabs-border-color);
+      border-radius: var(--tabs-border-radius) var(--tabs-border-radius) 0 0;
+      overflow-x: auto;
+
+      .shadcn-tabs-trigger {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--tabs-text-color);
+        background: transparent;
+        border: none;
+        transition: all 0.2s ease;
+        cursor: pointer;
+
+        &:hover {
+          background-color: var(--tabs-hover-background);
+        }
+
+        &[data-state="active"],
+        &.active {
+          background-color: var(--tabs-content-background);
+          color: var(--tabs-active-text-color);
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+          &::after {
+            content: "";
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--tabs-active-border-color);
+          }
+        }
+
+        .shadcn-tabs-trigger-image {
+          width: 20px;
+          height: 20px;
+          margin-right: 8px;
+          object-fit: cover;
+          border-radius: 3px;
+        }
+      }
+    }
+
+    .shadcn-tabs-content {
+      border: 1px solid var(--tabs-border-color);
+      border-top: none;
+      border-radius: 0 0 var(--tabs-border-radius) var(--tabs-border-radius);
+      background-color: var(--tabs-content-background);
+
+      .shadcn-tabs-pane {
+        display: none;
+        padding: 16px;
+
+        &[data-state="active"],
+        &.active {
+          display: block;
+        }
+
+        .tab-content {
+          width: 100%;
+
+          // Fix for various block spacing issues
+          > *:first-child {
+            margin-top: 0;
+          }
+
+          > *:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Custom styles for dark mode (optional)
+@media (prefers-color-scheme: dark) {
+  .shadcn-tabs-block {
+    --tabs-border-color: #374151;
+    --tabs-background: #1f2937;
+    --tabs-text-color: #9ca3af;
+    --tabs-active-text-color: #f9fafb;
+    --tabs-active-border-color: #3b82f6;
+    --tabs-hover-background: #111827;
+    --tabs-content-background: #111827;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .shadcn-tabs-block {
+    .shadcn-tabs {
+      .shadcn-tabs-list {
+        flex-wrap: wrap;
+
+        .shadcn-tabs-trigger {
+          flex: 1 0 auto;
+          text-align: center;
+          white-space: nowrap;
+
+          .shadcn-tabs-trigger-image {
+            width: 16px;
+            height: 16px;
+            margin-right: 4px;
+          }
+        }
+      }
+    }
+  }
+}
