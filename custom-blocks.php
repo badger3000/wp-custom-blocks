@@ -45,7 +45,7 @@ function create_block_custom_blocks_block_init() {
         'render_callback' => 'render_block_tabs'
     ]);
     register_block_type(__DIR__ . '/build/blocks/tab', [
-        'render_callback' => 'render_block_tab'
+        'render_callback' => 'render_tab_content_block'
     ]);
 }
 add_action('init', 'create_block_custom_blocks_block_init');

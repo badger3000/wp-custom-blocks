@@ -20,7 +20,9 @@ function Save({attributes}) {
 
   // Set block props with classes based on attributes
   const blockProps = useBlockProps.save({
-    className: `tab-content-block layout-${contentLayout} valign-${verticalAlignment} halign-${horizontalAlignment} width-${contentWidth} animation-${animationEffect}`,
+    className: `tab-content-block tabs-pane layout-${contentLayout} valign-${verticalAlignment} halign-${horizontalAlignment} width-${contentWidth} animation-${animationEffect}`,
+    "data-tab-id": tabId,
+    "data-state": "",
   });
 
   return (

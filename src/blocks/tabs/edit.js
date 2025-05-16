@@ -419,7 +419,7 @@ function Edit({attributes, setAttributes, clientId}) {
 
         <div className="tabs-content">
           {getBlockOrder(clientId).map((blockId, index) => {
-            if (index >= tabs.length) return null;
+            //if (index >= tabs.length) return null;
 
             const tabId = tabs[index].id;
 
